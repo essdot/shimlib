@@ -1,10 +1,11 @@
 # shimlib - A Useful Javascript Library
 
-Shimlib is a Javascript library that does things with functions, arrays, objects, and more. It's a personal project that implements different functionality that I have found useful at different points over time. It can be used to shim missing functionality like Object.keys, Function.prototype.bind, and more.  It implements functionality similar to [underscore.js](http://underscorejs.org/), [es5-shim](https://github.com/es-shims/es5-shim), and a simple class library for classical inheritance.
+Shimlib is a Javascript library that does things with functions, arrays, objects, and more. It's a personal project implementing a variety of functionality that I have found useful at times. It can be used to shim missing functionality like Object.keys, Function.prototype.bind, and more.  It implements functionality similar to [underscore.js](http://underscorejs.org/), [es5-shim](https://github.com/es-shims/es5-shim), and a simple class library for doing classical inheritance in Javascript.
 
 Shimlib's unit tests use [mocha](http://visionmedia.github.io/mocha/) and [chai](http://chaijs.com/). There are also integration tests for ensuring that it has the same behavior as native functions. Shimlib's functionality is split into node-style modules.
 
 Grunt tasks are provided for building, concat/minifying, running tests, etc. Browserify is used to resolve the node modules into a single script.
+
 
 ## Installing
 
@@ -49,7 +50,7 @@ The server script and general browser test setup was taken from the wonderful js
 
 ## Contributing
 
-As mentioned above, this is a personal project so contributions are not expected, but submit a pull request if you like.
+Further contributions/contributors are not expected, but submit a pull request if you like.
 
 
 # License
