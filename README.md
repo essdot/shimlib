@@ -15,13 +15,17 @@ Grunt tasks are provided for building, concat/minifying, running tests, etc. Bro
 ## Running tests
 
 Unit tests can be run on the command line, or in a browser. To run tests on the command line, run 
+
     npm test 
 or 
+
     grunt test
 
 To run them in a browser, run 
+
     node bin/serve 
 or 
+
     grunt server 
 and browse to [http://localhost:4444](http://localhost:4444).
 
