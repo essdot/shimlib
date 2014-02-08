@@ -817,22 +817,33 @@ describe('String integration', function(){
 });
 
 describe('Number integration', function(){
-	xit('to fixed', function(){
+	it('to fixed without proper rounding', function(){
 		var both = function(num, precision) {
-			expect(num.toFixed(precision)).to.equal(shimlib.toFixed(num, precision));
+			expect(num.toFixed(precision)).to.equal(shimlibNumber.toFixed(num, precision));
 		};
 
 		both(75, 2);
 		both(-75, 2);
-		both(75.105, 2);
-		both(-75.106, 2);
-		both(2.00193, 3);
+		
+		
 		both(-1, 3);
-		both(-1.6789, 3);
+		
 		both(1.1111111111111, 6);
 		both(0, 1);
 		both(0, 2);
 		both(-0, 2);
+	});
+
+	it('to fixed proper rounding', function() {
+		var both = function(num, precision) {
+			expect(num.toFixed(precision)).to.equal(shimlibNumber.toFixed(num, precision));
+		};
+
+		both(75.105, 2);
+		both(-75.106, 2);
+		both(2.00193, 3);
+		both(-1.6789, 3);
+
 	});
 });
 
