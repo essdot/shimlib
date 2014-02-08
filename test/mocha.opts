@@ -1,0 +1,7 @@
+--check-leaks
+--require test-lib/node-test-prepare.js
+--reporter spec
+--ui bdd
+
+test/shimlib-spec
+test/shimlib-integration-spec
