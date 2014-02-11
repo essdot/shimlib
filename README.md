@@ -27,8 +27,6 @@ Currently, the toFixed implementation simply truncates and does not do decimal r
 
 * [Justin Sippel](mailto:justin@sippel.com) 
 
-Twitter: [http://twitter.com/sdotpdx](http://twitter.com/sdotpdx)
-
 GitHub: [http://github.com/essdot](http://github.com/essdot)
 
 
