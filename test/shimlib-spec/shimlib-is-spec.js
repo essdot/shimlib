@@ -1,5 +1,5 @@
 describe('shimlib is', function() {
-	shimlibIs = require('shimlib-is');
+	shimlibIs = require('../../app/shimlib-is');
 
 	it('is array', function(){
 		var isa = shimlibIs.isArray;

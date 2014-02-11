@@ -1,5 +1,5 @@
 describe('Object integration', function(){
-	var shimlibObject = require('shimlib-object');
+	var shimlibObject = require('../../app/shimlib-object');
 
 	it('keys', function() {
 		var arr = [1, 2, 3];
@@ -9,8 +9,8 @@ describe('Object integration', function(){
 });
 
 describe('Array integration', function(){
-	var shimlibArray = require('shimlib-array');
-	var shimlibIs = require('shimlib-is');
+	var shimlibArray = require('../../app/shimlib-array');
+	var shimlibIs = require('../../app/shimlib-is');
 
 	it('map', function(){
 		var arr = [2, 5, 9];
@@ -74,7 +74,7 @@ describe('Array integration', function(){
 });
 
 describe('Function integration', function(){
-	var shimlibFunction = require('shimlib-function');
+	var shimlibFunction = require('../../app/shimlib-function');
 
 	it('bind', function(){
 		var obj = {
@@ -115,7 +115,7 @@ describe('Function integration', function(){
 });
 
 describe('String integration', function(){
-	var shimlibString = require('shimlib-string');
+	var shimlibString = require('../../app/shimlib-string');
 
 	it('trim', function() {
 		var both = function(arg) {
@@ -166,8 +166,8 @@ describe('Number integration', function(){
 });
 
 describe("Don't break when builtins altered", function() {
-	var shimlibObject = require('shimlib-object');
-	var shimlibString = require('shimlib-string');
+	var shimlibObject = require('../../app/shimlib-object');
+	var shimlibString = require('../../app/shimlib-string');
 
 	it('keys still works when hasOwnProperty is changed', function(){
 		var obj = {

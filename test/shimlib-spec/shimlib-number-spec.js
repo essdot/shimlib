@@ -1,5 +1,5 @@
 describe('shimlib number', function() {
-	shimlibNumber = require('shimlib-number');
+	shimlibNumber = require('../../app/shimlib-number');
 	
 	it('to fixed', function(){
 		expect(shimlibNumber.toFixed(75, 0)).to.equal('75');

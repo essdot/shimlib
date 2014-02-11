@@ -1,5 +1,5 @@
 describe('shimlib function', function() {
-	var shimlibFunction = require('shimlib-function');
+	var shimlibFunction = require('../../app/shimlib-function');
 	
 	it('bind', function(){
 		var obj = { hoobar: 8 };

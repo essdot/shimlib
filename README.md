@@ -4,30 +4,17 @@ Shimlib is a Javascript library that does things with functions, arrays, objects
 
 Shimlib's unit tests use [mocha](http://visionmedia.github.io/mocha/) and [chai](http://chaijs.com/). There are also integration tests for ensuring that it has the same behavior as native functions. Shimlib's functionality is split into node-style modules.
 
-Grunt tasks are provided for building, concat/minifying, running tests, etc. Browserify is used to resolve the node modules into a single script.
+Gulp tasks are provided for preparing scripts. Browserify is used to resolve the node modules into a single script for running the specs in the browser.
 
 ## Installing
 
     sh ./install.sh
 
-(Installs grunt-cli, browserify, and mocha for the test runner)
+(Installs browserify, and mocha for the test runner)
 
 ## Running tests
 
-Unit tests can be run on the command line, or in a browser. To run tests on the command line, run 
-
-    npm test 
-or 
-
-    grunt test
-
-To run them in a browser, run 
-
-    node bin/serve 
-or 
-
-    grunt server 
-and browse to [http://localhost:4444](http://localhost:4444).
+Unit tests can be run on the command line, or in a browser. To run tests on the command line, run `npm test` or `mocha`. To run the tests in a browser, run `node bin/serve` and browse to [http://localhost:4444](http://localhost:4444).
 
 ## Notes
 

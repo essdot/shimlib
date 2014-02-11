@@ -1,5 +1,5 @@
 describe('shimlib array', function() {
-	shimlibArray = require('shimlib-array');
+	shimlibArray = require('../../app/shimlib-array');
 
 	it('filter', function(){
 		var evenFunc = function(n) {

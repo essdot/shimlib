@@ -1,5 +1,5 @@
 describe('shimlib object', function() {
-	var shimlibObject = require('shimlib-object');
+	var shimlibObject = require('../../app/shimlib-object');
 	
 	it('extend', function() {
 		var empty = {};

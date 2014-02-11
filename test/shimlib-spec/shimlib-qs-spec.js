@@ -1,5 +1,5 @@
 describe('shimlib query string', function(){
-	shimlibQs = require('shimlib-qs');
+	shimlibQs = require('../../app/shimlib-qs');
 
 	it('handle number values', function() {
 		var qs = 'decimal=1.7903&negativeDecimal=-0.235&zero=0&integer=12&negativeInteger=-28';

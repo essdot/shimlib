@@ -1,5 +1,5 @@
 describe('shimlib string', function() {
-	var shimlibString = require('shimlib-string');
+	var shimlibString = require('../../app/shimlib-string');
 
 	it('strip', function(){
 		var s = "  abc  ";

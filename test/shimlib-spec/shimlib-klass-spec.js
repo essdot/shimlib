@@ -1,5 +1,5 @@
 describe('shimlib klass', function() {
-	shimlibKlass = require('shimlib-klass');
+	shimlibKlass = require('../../app/shimlib-klass');
 	
 	it('klass', function(){
 		var Animal = shimlibKlass.klass({

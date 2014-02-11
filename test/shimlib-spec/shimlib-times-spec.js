@@ -1,5 +1,5 @@
 describe('shimlib times', function() {
-	var shimlibTimes = require('shimlib-times');
+	var shimlibTimes = require('../../app/shimlib-times');
 	
 	it('times function', function() {
 		var count = 0;
