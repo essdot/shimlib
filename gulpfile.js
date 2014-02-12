@@ -19,12 +19,12 @@ gulp.task('prepare-spec', function() {
 		.pipe(gulp.dest('./min'));
 });
 
-gulp.task('prepare-shimlib', function() {
+gulp.task('prepare-shimlib-standalone', function() {
 	gulp.src('app/shimlib.js')
-		.pipe(browserify())
+		.pipe(browserify({ standalone: 'shimlib' }))
 		.pipe(uglify())
-		.pipe(rename('iexpect.min.js'))
+		.pipe(rename('shimlib.min.js'))
 		.pipe(gulp.dest('./min'));
 });
 
-gulp.task('build', [ 'clean', 'prepare-shimlib', 'prepare-spec' ]);
+gulp.task('build', [ 'clean', 'prepare-shimlib-standalone', 'prepare-spec' ]);
