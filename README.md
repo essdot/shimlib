@@ -6,7 +6,7 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 
 Shimlib's unit tests use [mocha](http://visionmedia.github.io/mocha/) and [chai](http://chaijs.com/). There are also integration tests for ensuring that it has the same behavior as native functions. Shimlib aims to work if Javascript builtins have been altered, and provides tests for that too. Shimlib's functionality is split into node-style modules.
 
-Gulp tasks are provided for preparing scripts. Browserify is used to resolve the node modules into a single script for running the specs in the browser.
+Gulp tasks are provided for preparing scripts. Browserify is used to resolve the node modules into a single script for running the specs in the browser and to generate the shimlib standalone build, which can be used in browser or node.
 
 
 ## Installing
@@ -32,7 +32,7 @@ GitHub: [http://github.com/essdot](http://github.com/essdot)
 
 ## Thanks
 
-The server script and general browser test setup was taken from the wonderful js-assessment by Rebecca Murphy: https://github.com/rmurphey/js-assessment
+The server script and general browser test setup was taken from the wonderful js-assessment by Rebecca Murphey: https://github.com/rmurphey/js-assessment
 
 
 ## Contributing
