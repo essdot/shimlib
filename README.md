@@ -28,10 +28,11 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 	* **isNumber**
 
 * Number
-	* **toFixed(n, precision)**: Returns a string representing *n* with *precision* digits after the decimal point. **Note: Currently, toFixed() truncates the number and does not round it. This does not match the spec.**
+	* **toFixed(n, precision)**: Returns a string representing *n* with *precision* digits after the decimal point.  
+**Note: Currently, toFixed() truncates the number and does not round it. This does not match the spec.**
 
 * Object
-	* **create(o)**: Create a new object inheriting from *o*. The prototype of the new object's constructor will be *o*.
+	* **create(o)**: Create a new empty object inheriting from *o*. The prototype of the new object's constructor will be *o*. The new object has no properties of its own but will have all of **o**'s properties due to the magic of prototyping.
 	* **extend(destination, sources)**: Replace all values in *destination* with those in one or more *sources*.
 	* **keys(o)**: Return a list of the names of *o*'s own properties.
 	* **copyProperty(obj, sourceName, destName)**: Take *obj*'s property named *sourceName*, and copy it to *obj.destName*. Convenient for getters which can't be referenced directly without invoking them.
