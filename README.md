@@ -34,6 +34,8 @@ GitHub: [http://github.com/essdot](http://github.com/essdot)
 
 The server script and general browser test setup was taken from the wonderful js-assessment by Rebecca Murphey: https://github.com/rmurphey/js-assessment
 
+Some alterations were made to the server script for error handling.
+
 
 ## Contributing
 
