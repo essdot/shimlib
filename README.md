@@ -28,6 +28,8 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 
 #### Is
 
+Type identity functions.
+
 * **shimlib.isArray**
 * **shimlib.isString**
 * **shimlib.isFunction**
