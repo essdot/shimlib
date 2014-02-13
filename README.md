@@ -28,14 +28,68 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 	* **isNumber**
 * klass
 	* **klass(methodsAndProperties)**: A simple class maker for doing classical-style inheritance in Javascript. Returns a factory function (not a constructor) that will create a new instance of the klass. If *methodsAndProperties* contains an *initialize* function, the klass factory function will invoke *initialize* on every instance it creates.
+```javascript
+var Auto = klass({ 
+	hasWheels: true,
+	honkHorn: function() {
+		return "beep beep!";
+	},
+	initialize: function() {
+		this.sound = "vroom!";
+	}
+});
+
+var car = Auto({ numberOfDoors: 4, weightInTons: 1 });
+var truck = Auto({ numberOfDoors: 2, weightInTons: 3 });
+
+car.sound === "vroom!";
+truck.sound === "vroom!";
+car.numberOfDoors === 4;
+truck.numberOfDoors === 2;
+```
 
 	* **klass.extend(methodsAndProperties)**: Creates a new klass with all the methods and properties from *klass*, extended with the specified methods and properties.
+```javascript
+var HybridAuto = Auto.extend({
+	hybridEngine: true
+});
+
+var prius = HybridAuto();
+prius.hasWheels === true;
+prius.honkHorn === "beep beep!";
+prius.hybridEngine === true;
+```
 
 	* **klass.private(privObj)**: Add private values to this *klass*. Private values are shared amongst all instances of this *klass*.
+```javascript
+var CIAOfficer = klass({
+	lawEnforcement: true,
+	bureau: 'CIA'
+});
+
+CIAOfficer.private({ secretKey: 'ABCD1234', address: '1600 Penn Ave' });
+
+var jerry = CIAOfficer({ name: 'Jerry' });
+jerry.secretKey === undefined;
+CIAOfficer.secretKey === undefined;
+```
 
 	* **klass.privateMethod(name, fn)**: Add a new method to this *klass* which has access to the private values of the *klass*. *name* is the method's name. When *fn* is invoked on instances of *klass*, *fn* will be passed an object representing the private values of the *klass*.
+```javascript
+var confirmSecretKey = function(potentialSecret, _private) {
+	return _private.secretKey === potentialSecret;	
+};
+
+CIAOfficer.privateMethod('confirmSecretKey', confirmSecretKey);
+jerry.confirmSecretKey('ABCD1234') === true;
+```
 
 	* **klass.static(staticObj)**: Add static values to this *klass*. Static values are properties of the *klass* itself, not the instances of *klass*.
+```javascript
+Auto.static({ allUseGasoline: false });
+
+Auto.allUseGasoline === false;
+```
 
 * Number
 	* **toFixed(n, precision)**: Returns a string representing *n* with *precision* digits after the decimal point. **Note: Currently, toFixed() truncates the number and does not round it. This does not match the spec.**
