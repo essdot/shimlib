@@ -32,14 +32,17 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 
 * Object
 	* **create(o)**: Create a new object inheriting from *o*. The prototype of the new object's constructor will be *o*.
-	* **extend(destination, source)**: Replace all values in *destination* with those in *source*.
+	* **extend(destination, sources)**: Replace all values in *destination* with those in one or more *sources*.
 	* **keys(o)**: Return a list of the names of *o*'s own properties.
 	* **copyProperty(obj, sourceName, destName)**: Take *obj*'s property named *sourceName*, and copy it to *obj.destName*. Convenient for getters which can't be referenced directly without invoking them.
+
 * Query Strings
 	* **toQueryString(o)**: Serialize *o* as a query string.
 	* **fromQueryString(qs)**: Deserialize *qs* into a Javascript object.
+
 * String
 	* **strip(s)**: strip whitespace from beginning and end of *s*.
+
 * Times
 	* **timesString(s, times)**: Return a new string where *s* is repeated *times* number of times.
 	* **timesValue(val, times)**: Return a new array where *val* is repeated *times* number of times.

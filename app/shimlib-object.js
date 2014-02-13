@@ -16,15 +16,20 @@
 		return new Ctor();
 	}
 
-	function shimlibExtend(dest, source) {
-		var keys = shimlibKeys(source);
+	function shimlibExtend(dest) {
+		var sources = [].slice.call(arguments, 1);
+		if (dest === undefined || sources[0] === undefined) { return; }
 
-		for (var i = 0; i < keys.length; i++) {
-			var key = keys[i];
-			dest[key] = source[key];
+		for (var sourceIndex = 0; sourceIndex < sources.length; sourceIndex++) {
+			var source = sources[sourceIndex];
+			var keys = shimlibKeys(source);
+
+			for (var i = 0; i < keys.length; i++) {
+				var key = keys[i];
+				dest[key] = source[key];
+			}
 		}
 
-		return source;
 	}
 
 	function shimlibKeys(o) {

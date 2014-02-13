@@ -16,6 +16,27 @@ describe('shimlib object', function() {
 		expect(empty.age).to.equal(33);
 	});
 
+	it('extend multiple sources', function() {
+		var coffee = {
+			espresso: 'espresso',
+			cappuccino: 'cappuccino',
+			caffeine: true
+		};
+
+		var juice = {
+			orange: 'orange',
+			grapefruit: 'grapefruit',
+			caffeine: false
+		};
+
+		var drinks = {};
+		shimlibObject.extend(drinks, coffee, juice);
+
+		expect(drinks.espresso).to.equal('espresso');
+		expect(drinks.orange).to.equal('orange');
+		expect(drinks.caffeine).to.equal(false);
+	});
+
 	it('keys', function() {
 		var obj = {
 			derf: 7,

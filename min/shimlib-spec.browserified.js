@@ -326,15 +326,20 @@
 		return new Ctor();
 	}
 
-	function shimlibExtend(dest, source) {
-		var keys = shimlibKeys(source);
+	function shimlibExtend(dest) {
+		var sources = [].slice.call(arguments, 1);
+		if (dest === undefined || sources[0] === undefined) { return; }
 
-		for (var i = 0; i < keys.length; i++) {
-			var key = keys[i];
-			dest[key] = source[key];
+		for (var sourceIndex = 0; sourceIndex < sources.length; sourceIndex++) {
+			var source = sources[sourceIndex];
+			var keys = shimlibKeys(source);
+
+			for (var i = 0; i < keys.length; i++) {
+				var key = keys[i];
+				dest[key] = source[key];
+			}
 		}
 
-		return source;
 	}
 
 	function shimlibKeys(o) {
@@ -655,12 +660,68 @@
 },{"shimlib-is":11}],11:[function(require,module,exports){
 module.exports=require(3)
 },{}],12:[function(require,module,exports){
-module.exports=require(6)
+(function shimlibObjectModule() {
+	"use strict";
+	
+	var _hasOwn = Object.prototype.hasOwnProperty;
+	var _undefined = void 0;
+
+	function shimlibCreate(o) {
+		if (o === _undefined ||
+			o === null ||
+			typeof o !== 'object') {
+			return {};
+		}
+
+		function Ctor(){}
+		Ctor.prototype = o;
+		return new Ctor();
+	}
+
+	function shimlibExtend(dest, source) {
+		var keys = shimlibKeys(source);
+
+		for (var i = 0; i < keys.length; i++) {
+			var key = keys[i];
+			dest[key] = source[key];
+		}
+
+		return source;
+	}
+
+	function shimlibKeys(o) {
+		if (!o) { return; }
+
+		var keys = [];
+
+		for (var k in o) {
+			if (_hasOwn.call(o, k)) {
+				keys.push(k);
+			}
+		}
+
+		return keys;
+	}
+
+	function shimlibCopyProperty(obj, sourceName, destName) {
+		var descriptor = Object.getOwnPropertyDescriptor(obj, sourceName);
+
+		Object.defineProperty(obj, destName, descriptor);
+	}
+
+	var shimlibObject = {
+		copyProp: shimlibCopyProperty,
+		copyProperty: shimlibCopyProperty,
+		create: shimlibCreate,
+		extend: shimlibExtend,
+		keys: shimlibKeys
+	};
+
+	module.exports = shimlibObject;
+})();
 },{}],13:[function(require,module,exports){
 module.exports=require(9)
 },{"shimlib-is":11}],14:[function(require,module,exports){
-describe('shimlib', function() {
-
 describe('shimlib array', function() {
 	shimlibArray = require('../../app/shimlib-array');
 
@@ -981,10 +1042,6 @@ describe('shimlib array', function() {
 		expect(shimlibArray.pluck(arr2, 'yitta')).to.deep.equal([]);
 	});
 });
-
-});
-describe('shimlib', function() {
-
 describe('shimlib function', function() {
 	var shimlibFunction = require('../../app/shimlib-function');
 	
@@ -1041,8 +1098,6 @@ describe('shimlib function', function() {
 		var composed3 = shimlibFunction.compose(func3, func2, func1);
 		expect(composed3()).to.equal(15);
 	});
-});
-
 });
 describe('shimlib is', function() {
 	shimlibIs = require('../../app/shimlib-is');
@@ -1346,6 +1401,27 @@ describe('shimlib object', function() {
 		shimlibObject.extend(empty, objB);
 		expect(empty.city).to.equal('Boston');
 		expect(empty.age).to.equal(33);
+	});
+
+	it('extend multiple sources', function() {
+		var coffee = {
+			espresso: 'espresso',
+			cappuccino: 'cappuccino',
+			caffeine: true
+		};
+
+		var juice = {
+			orange: 'orange',
+			grapefruit: 'grapefruit',
+			caffeine: false
+		};
+
+		var drinks = {};
+		shimlibObject.extend(drinks, coffee, juice);
+
+		expect(drinks.espresso).to.equal('espresso');
+		expect(drinks.orange).to.equal('orange');
+		expect(drinks.caffeine).to.equal(false);
 	});
 
 	it('keys', function() {
