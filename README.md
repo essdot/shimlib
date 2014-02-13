@@ -22,7 +22,7 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 
 #### Function
 
-* **shimlib.ind(fn, context)**: Standard bind function. Returns a new function that calls *fn* with *context* bound to `this`.
+* **shimlib.bind(fn, context)**: Standard bind function. Returns a new function that calls *fn* with *context* bound to `this`.
 
 * **shimlib.compose(func1 [, func2...])**: Standard compose function. Compose one or more functions together.
 
