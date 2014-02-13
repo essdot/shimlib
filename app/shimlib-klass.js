@@ -37,7 +37,7 @@
 			// Copy properties from argument for this instance only
 			shimlibObject.extend(newObj, o);
 
-			if (newObj.initialize) {
+			if (typeof newObj.initialize === 'function') {
 				newObj.initialize(o);
 			}
 
