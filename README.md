@@ -21,7 +21,7 @@ Unit tests can be run on the command line, or in a browser. To run tests on the 
 
 ## Notes
 
-Currently, the toFixed implementation simply truncates and does not do decimal rounding.
+Currently, the toFixed implementation simply truncates and does not do decimal rounding. This does not match the [spec for Number.prototype.toFixed](http://www.ecma-international.org/ecma-262/5.1/#sec-15.7.4.5).
 
 ## Maintainer
 
