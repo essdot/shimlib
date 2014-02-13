@@ -5,47 +5,58 @@ Shimlib is a Javascript library that does things with functions, arrays, objects
 Some of its functions are similar to what you'll find in  [underscore.js](http://underscorejs.org/) and  [es5-shim](https://github.com/es-shims/es5-shim). It also includes a simple class library for doing classical inheritance in Javascript, and some very handy serialization/deserialization for query strings.
 
 ## Functionality
-* Array
-	* **shimlib.map(fn, arr, [thisArg])**: Standard map function. Using values returned from *fn*, transform *arr* into a new array. *fn* is a function that takes an element of *arr* and returns some value. *thisArg* is an optional parameter that will be bound to `this` when fn is called. Otherwise, `this` will be bound to *arr*.
 
-	* **shimlib.filter(fn, arr, [thisArg])**: Standard filter function. Filter *arr* by passing each element to *fn*. Each element of *arr* will be included in the result if and only if *fn* returns `true`. *thisArg* is an optional parameter that will be bound to `this` when fn is called. Otherwise, `this` will be bound to *arr*.
+#### Array
 
-	* **shimlib.forEach(fn, arr, [thisArg])**: Standard forEach function. *fn* will be called for each element of *arr*. *thisArg* is an optional parameter that will be bound to `this` when fn is called. Otherwise, `this` will be bound to *arr*.
+* **shimlib.map(fn, arr, [thisArg])**: Standard map function. Using values returned from *fn*, transform *arr* into a new array. *fn* is a function that takes an element of *arr* and returns some value. *thisArg* is an optional parameter that will be bound to `this` when fn is called. Otherwise, `this` will be bound to *arr*.
 
-	* **shimlib.invoke(arr, methodName)**: Invoke *methodName* as a method of each element of *arr* and return an array of the results of each invocation. *methodName* should be a string. Any extra arguments will be passed on to the method.
+* **shimlib.filter(fn, arr, [thisArg])**: Standard filter function. Filter *arr* by passing each element to *fn*. Each element of *arr* will be included in the result if and only if *fn* returns `true`. *thisArg* is an optional parameter that will be bound to `this` when fn is called. Otherwise, `this` will be bound to *arr*.
 
-	* **shimlib.pickRandom(arr)**: Returns a randomly-selected element of *arr*.
+* **shimlib.forEach(fn, arr, [thisArg])**: Standard forEach function. *fn* will be called for each element of *arr*. *thisArg* is an optional parameter that will be bound to `this` when fn is called. Otherwise, `this` will be bound to *arr*.
 
-	* **shimlib.pluck(arr, propertyName)**: Returns an array representing the value of *propertyName* for each element in *arr*. 
+* **shimlib.invoke(arr, methodName)**: Invoke *methodName* as a method of each element of *arr* and return an array of the results of each invocation. *methodName* should be a string. Any extra arguments will be passed on to the method.
 
-* Function
-	* **bshimlib.ind(fn, context)**: Standard bind function. Returns a new function that calls *fn* with *context* bound to `this`.
-	* **shimlib.compose(func1 [, func2...])**: Standard compose function. Compose one or more functions together.
-* Is
-	* **shimlib.isArray**
-	* **shimlib.isString**
-	* **shimlib.isFunction**
-	* **shimlib.isNumber**
+* **shimlib.pickRandom(arr)**: Returns a randomly-selected element of *arr*.
 
-* Number
-	* **shimlib.toFixed(n, precision)**: Returns a string representing *n* with *precision* digits after the decimal point.  
+* **shimlib.pluck(arr, propertyName)**: Returns an array representing the value of *propertyName* for each element in *arr*. 
+
+#### Function
+
+* **bshimlib.ind(fn, context)**: Standard bind function. Returns a new function that calls *fn* with *context* bound to `this`.
+
+* **shimlib.compose(func1 [, func2...])**: Standard compose function. Compose one or more functions together.
+
+#### Is
+
+* **shimlib.isArray**
+* **shimlib.isString**
+* **shimlib.isFunction**
+* **shimlib.isNumber**
+
+#### Number
+* **shimlib.toFixed(n, precision)**: Returns a string representing *n* with *precision* digits after the decimal point.  
 **Note: Currently, toFixed() truncates the number and does not round it. This does not match the spec.**
 
-* Object
-	* **shimlib.create(o)**: Create a new object inheriting from *o*. The prototype of the new object's constructor will be *o*.
-	* **shimlib.extend(destination, sources)**: Replace all values in *destination* with those in one or more *sources*.
-	* **shimlib.keys(o)**: Return a list of the names of *o*'s own properties.
-	* **shimlib.copyProperty(obj, sourceName, destName)**: Take *obj*'s property named *sourceName*, and copy it to *obj.destName*. Convenient for getters which can't be referenced directly without invoking them.
+#### Object
+* **shimlib.create(o)**: Create a new object inheriting from *o*. The prototype of the new object's constructor will be *o*.
 
-* Query Strings
-	* **shimlib.toQueryString(o)**: Serialize *o* as a query string.
-	* **shimlib.fromQueryString(qs)**: Deserialize *qs* into a Javascript object.
+* **shimlib.extend(destination, sources)**: Replace all values in *destination* with those in one or more *sources*.
 
-* String
-	* **shimlib.strip(s)**: strip whitespace from beginning and end of *s*.
+* **shimlib.keys(o)**: Return a list of the names of *o*'s own properties.
 
-* Times
-	* **shimlib.times(arg, numTimes, [context])**: Call *arg* *numTimes* times. Optionally, *context* will be bound to `this` when *fn* is called. If *arg* is a string, returns a new string with *arg* repeated *numTimes* times. If *arg* is otherwise not a function, returns an array of length *times*, with all elements equal to *arg*.
+* **shimlib.copyProperty(obj, sourceName, destName)**: Take *obj*'s property named *sourceName*, and copy it to *obj.destName*. Convenient for getters which can't be referenced directly without invoking them.
+
+#### Query Strings
+
+* **shimlib.toQueryString(o)**: Serialize *o* as a query string.
+
+* **shimlib.fromQueryString(qs)**: Deserialize *qs* into a Javascript object.
+
+#### String
+* **shimlib.strip(s)**: strip whitespace from beginning and end of *s*.
+
+#### Times
+* **shimlib.times(arg, numTimes, [context])**: Call *arg* *numTimes* times. Optionally, *context* will be bound to `this` when *fn* is called. If *arg* is a string, returns a new string with *arg* repeated *numTimes* times. If *arg* is otherwise not a function, returns an array of length *times*, with all elements equal to *arg*.
 
 ```javascript
 //logs 'hi' three times
