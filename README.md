@@ -4,10 +4,46 @@ Shimlib is a Javascript library that does things with functions, arrays, objects
 
 Some of its functions are similar to what you'll find in  [underscore.js](http://underscorejs.org/) and  [es5-shim](https://github.com/es-shims/es5-shim). It also includes a simple class library for doing classical inheritance in Javascript, and some very handy serialization/deserialization for query strings.
 
+## Functionality
+* Array
+	* map(fn, arr, [thisArg]): Standard map function. Using fn, transform arr into a new array. fn is a function that takes an element of arr and returns some value. thisArg is an optional parameter that will be bound to `this` when fn is called. 
+
+	* filter(fn, arr, [thisArg]): Standard filter function. Filter arr by passing each element to fn. Any element of arr for which fn returns `true` will be included in the result. thisArg is an optional parameter that will be bound to `this` when fn is called.
+	* forEach(fn, arr, [thisArg]): Standard forEach function. fn will be called for each element of arr. thisArg is an optional parameter that will be bound to `this` when fn is called. Otherwise, `this` will be bound to arr.
+	* invoke(arr, methodName): Invoke methodName on each element of arr. methodName should be a string. Any extra arguments will be passed on to the method.
+	* pickRandom(arr): Choose a random element of arr.
+	* pluck(arr, propertyName): Returns an array of only the property specified from each element of arr.
+* Function
+	* bind(fn, context): Standard bind function. Returns a new function that calls fn with context bound to `this`.
+	* compose([functions...]): Standard compose function. Compose one or more functions together.
+* Is
+	* isArray
+	* isString
+	* isFunction
+	* isNumber
+* klass - a simple class maker for doing classical inheritance in Javascript
+* Number
+	* toFixed(n, precision): Returns a string representing n with precision digits after the decimal point. **Note: Currently, toFixed() truncates the number and does not round it. This does not match the spec.**
+* Object
+	* create(o): Create a new object inheriting from o. The prototype of the new object's constructor will be o.
+	* extend(destination, source): Replace all values in destination with those in source.
+	* keys(o): Return a list of the names of o's own properties.
+	* copyProperty(obj, sourceName, destName): Take obj's property named sourceName, and copy it to obj.destName. Convenient if obj has getters that can't be referenced directly.
+* Query Strings
+	* toQueryString(o): Serialize o as a query string.
+	* fromQueryString(qs): Deserialize qs into a Javascript object.
+* String
+	* strip(s): strip whitespace from beginning and end of s.
+Times
+	* timesString(s, times): Return a new string where s is repeated times number of times.
+	* timesValue(val, times): Return a new array where val is repeated times number of times.
+	* times(fn, numTimes, [context]): Call fn numTimes times. Optionally, context will be bound to `this` when fn is called. If fn is a string, delegate to timesString(). If fn is otherwise not a function, delegate to timesValue().
+
+## Tests & Tools
+
 Shimlib's unit tests use [mocha](http://visionmedia.github.io/mocha/) and [chai](http://chaijs.com/). There are also integration tests for ensuring that it has the same behavior as native functions. Shimlib aims to work if Javascript builtins have been altered, and provides tests for that too. Shimlib's functionality is split into node-style modules.
 
 Gulp tasks are provided for preparing scripts. Browserify is used to resolve the node modules into a single script for running the specs in the browser and to generate the shimlib standalone build, which can be used in browser or node.
-
 
 ## Installing
 
