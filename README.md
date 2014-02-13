@@ -45,10 +45,8 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 	* **shimlib.strip(s)**: strip whitespace from beginning and end of *s*.
 
 * Times
-	* **shimlib.times(fn, numTimes, [context])**: Call *fn* *numTimes* times. Optionally, *context* will be bound to `this` when *fn* is called.  
+	* **shimlib.times(arg, numTimes, [context])**: Call *arg* *numTimes* times. Optionally, *context* will be bound to `this` when *fn* is called. If *arg* is a string, returns a new string with *arg* repeated *numTimes* times. If *arg* is otherwise not a function, returns an array of length *times*, with all elements equal to *arg*.
 
-	If *fn* is a string, returns a new string with *fn* repeated *numTimes* times.
-	If *fn* is otherwise not a function, returns an array of length *times*, with all elements equal to *fn*.
 ```javascript
 //logs 'hi' three times
 shimlib.times(function() { console.log('hi'); }, 3);
