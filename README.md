@@ -6,43 +6,54 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 
 ## Functionality
 * Array
-	* map(fn, arr, [thisArg]): Standard map function. Using values returned from *fn*, transform *arr* into a new array. *fn* is a function that takes an element of *arr* and returns some value. *thisArg* is an optional parameter that will be bound to `this` when fn is called. Otherwise, `this` will be bound to *arr*.
+	* **map(fn, arr, [thisArg])**: Standard map function. Using values returned from *fn*, transform *arr* into a new array. *fn* is a function that takes an element of *arr* and returns some value. *thisArg* is an optional parameter that will be bound to `this` when fn is called. Otherwise, `this` will be bound to *arr*.
 
-	* filter(fn, arr, [thisArg]): Standard filter function. Filter *arr* by passing each element to *fn*. Each element of *arr* will be included in the result if and only if *fn* returns `true`. *thisArg* is an optional parameter that will be bound to `this` when fn is called. Otherwise, `this` will be bound to *arr*.
+	* **filter(fn, arr, [thisArg])**: Standard filter function. Filter *arr* by passing each element to *fn*. Each element of *arr* will be included in the result if and only if *fn* returns `true`. *thisArg* is an optional parameter that will be bound to `this` when fn is called. Otherwise, `this` will be bound to *arr*.
 
-	* forEach(fn, arr, [thisArg]): Standard forEach function. *fn* will be called for each element of *arr*. *thisArg* is an optional parameter that will be bound to `this` when fn is called. Otherwise, `this` will be bound to *arr*.
+	* **forEach(fn, arr, [thisArg])**: Standard forEach function. *fn* will be called for each element of *arr*. *thisArg* is an optional parameter that will be bound to `this` when fn is called. Otherwise, `this` will be bound to *arr*.
 
-	* invoke(arr, methodName): Invoke *methodName* as a method of each element of *arr* and return an array of the results of each invocation. *methodName* should be a string. Any extra arguments will be passed on to the method.
+	* **invoke(arr, methodName)**: Invoke *methodName* as a method of each element of *arr* and return an array of the results of each invocation. *methodName* should be a string. Any extra arguments will be passed on to the method.
 
-	* pickRandom(arr): Choose a random element of *arr*.
+	* **pickRandom(arr)**: Returns a randomly-selected element of *arr*.
 
-	* pluck(arr, propertyName): Returns an array representing the value of *propertyName* for each element in *arr*. 
+	* **pluck(arr, propertyName)**: Returns an array representing the value of *propertyName* for each element in *arr*. 
 
 * Function
-	* bind(fn, context): Standard bind function. Returns a new function that calls *fn* with *context* bound to `this`.
-	* compose(func1 [, func2...]): Standard compose function. Compose one or more functions together.
+	* **bind(fn, context)**: Standard bind function. Returns a new function that calls *fn* with *context* bound to `this`.
+	* **compose(func1 [, func2...])**: Standard compose function. Compose one or more functions together.
 * Is
-	* isArray
-	* isString
-	* isFunction
-	* isNumber
-* klass - a simple class maker for doing classical inheritance in Javascript
+	* **isArray**
+	* **isString**
+	* **isFunction**
+	* **isNumber**
+* klass
+	* **klass(methodsAndProperties)**: A simple class maker for doing classical-style inheritance in Javascript. Returns a factory function (not a constructor) that will create a new instance of the klass. If *methodsAndProperties* contains an *initialize* function, the klass factory function will invoke *initialize* on every instance it creates.
+
+	* **klass.extend(methodsAndProperties)**: Creates a new klass with all the methods and properties from *klass*, extended with the specified methods and properties.
+
+	* **klass.private(privObj)**: Add private values to this *klass*. Private values are shared amongst all instances of this *klass*.
+
+	* **klass.privateMethod(name, fn)**: Add a new method to this *klass* which has access to the private values of the *klass*. *name* is the method's name. When *fn* is invoked on instances of *klass*, *fn* will be passed an object representing the private values of the *klass*.
+
+	* **klass.static(staticObj)**: Add static values to this *klass*. Static values are properties of the *klass* itself, not the instances of *klass*.
+
 * Number
-	* toFixed(n, precision): Returns a string representing *n* with *precision* digits after the decimal point. **Note: Currently, toFixed() truncates the number and does not round it. This does not match the spec.**
+	* **toFixed(n, precision)**: Returns a string representing *n* with *precision* digits after the decimal point. **Note: Currently, toFixed() truncates the number and does not round it. This does not match the spec.**
+
 * Object
-	* create(o): Create a new object inheriting from *o*. The prototype of the new object's constructor will be *o*.
-	* extend(destination, source): Replace all values in *destination* with those in *source*.
-	* keys(o): Return a list of the names of *o*'s own properties.
-	* copyProperty(obj, sourceName, destName): Take *obj*'s property named *sourceName*, and copy it to *obj.destName*. Convenient for getters which can't be referenced directly without invoking them.
+	* **create(o)**: Create a new object inheriting from *o*. The prototype of the new object's constructor will be *o*.
+	* **extend(destination, source)**: Replace all values in *destination* with those in *source*.
+	* **keys(o)**: Return a list of the names of *o*'s own properties.
+	* **copyProperty(obj, sourceName, destName)**: Take *obj*'s property named *sourceName*, and copy it to *obj.destName*. Convenient for getters which can't be referenced directly without invoking them.
 * Query Strings
-	* toQueryString(o): Serialize *o* as a query string.
-	* fromQueryString(qs): Deserialize *qs* into a Javascript object.
+	* **toQueryString(o)**: Serialize *o* as a query string.
+	* **fromQueryString(qs)**: Deserialize *qs* into a Javascript object.
 * String
-	* strip(s): strip whitespace from beginning and end of *s*.
+	* **strip(s)**: strip whitespace from beginning and end of *s*.
 Times
-	* timesString(s, times): Return a new string where *s* is repeated *times* number of times.
-	* timesValue(val, times): Return a new array where *val* is repeated *times* number of times.
-	* times(fn, numTimes, [context]): Call *fn* *numTimes* times. Optionally, *context* will be bound to `this` when *fn* is called. If *fn* is a string, delegates to *timesString()*. If *fn* is otherwise not a function, delegates to *timesValue()*.
+	* **timesString(s, times)**: Return a new string where *s* is repeated *times* number of times.
+	* **timesValue(val, times)**: Return a new array where *val* is repeated *times* number of times.
+	* **times(fn, numTimes, [context])**: Call *fn* *numTimes* times. Optionally, *context* will be bound to `this` when *fn* is called. If *fn* is a string, delegates to *timesString()*. If *fn* is otherwise not a function, delegates to *timesValue()*.
 
 ## Tests & Tools
 
