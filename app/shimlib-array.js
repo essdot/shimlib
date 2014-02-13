@@ -1,19 +1,18 @@
 (function shimlibArrayModule() {
 	"use strict";
 
-	var _slice = [].slice.call.bind([].slice);
 	var _undefined = void 0;
 
 	var shimlibIs = require('shimlib-is');
 
-	function shimlibFilter(fn, arr) {
+	function shimlibFilter(fn, arr, thisArg) {
 		if (!fn) { return; }
-
 		arr = arr || [];
 		var result = [];
+		var thisObj = thisArg || arr;
 
 		for (var i = 0; i < arr.length; i++) {
-			if (fn(arr[i]) === true) {
+			if (fn.call(thisObj, arr[i], i, arr) === true) {
 				result.push(arr[i]);
 			}
 		}
@@ -21,52 +20,46 @@
 		return result;
 	}
 
-	function shimlibForEach(fn, arr) {
+	function shimlibForEach(fn, arr, thisArg) {
 		if (!fn){ return; }
-
-		var thisObj = arr;
+		var thisObj = thisArg || arr;
 
 		for (var i = 0; i < arr.length; i++) {
 			var current = arr[i];
 
-			fn.call(arr, current);
+			fn.call(thisObj, current, i, arr);
 		}
 	}
 
-	function shimlibMap(fn, arr) {
+	function shimlibMap(fn, arr, thisArg) {
 		if (!fn || !arr) { return; }
-
 		var result = [];
-		for (var i = 0; i < arr.length; i++) {
-			
-			var args = _slice(arguments, 2);
-			args.unshift(arr[i]);
+		var thisObj = thisArg || arr;
 
-			result[i] = fn.apply(arr, args);
+		for (var i = 0; i < arr.length; i++) {
+			result[i] = fn.call(thisObj, arr[i], i, arr);
 		}
 
 		return result;
 	}
 
-	function shimlibInvoke(fn, list, args) {
-		if (!args) {
+	function shimlibInvoke(arr, methodName, args) {
+		if(!shimlibIs.isString(methodName)) {
+			throw new TypeError('methodName should be a string');
+		}
+		if (args === _undefined) {
 			args = [];
 		}
-		if (!shimlibIs.isArray(args)){
+		if (!shimlibIs.isArray(args)) {
 			args = [args];
 		}
 
 		return shimlibMap(function(val){
-			if (shimlibIs.isString(fn)) {
-				if (!val[fn]) {
-					return;
-				}
-
-				fn = val[fn];
-			}
+			var fn = val[methodName];
+			if(fn === _undefined) { return; }
 
 			return fn.apply(val, args);
-		}, list);
+		}, arr);
 	}
 
 	function shimlibPickRandom(list) {
