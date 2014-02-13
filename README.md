@@ -8,11 +8,11 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 
 #### Array
 
-* **shimlib.map(fn, arr, [thisArg])**: Standard map function. Using values returned from *fn*, transform *arr* into a new array. *fn* is a function that takes an element of *arr* and returns some value. *thisArg* is an optional parameter that will be bound to `this` when fn is called. Otherwise, `this` will be bound to *arr*.
+* **shimlib.map(fn, arr, [thisArg])**: Standard map function. Using values returned from *fn*, transform *arr* into a new array. *fn* is a function that takes an element of *arr* and returns some value. *thisArg* is an optional parameter that will be bound to `this` when *fn* is called. Otherwise, `this` will be bound to *arr*.
 
-* **shimlib.filter(fn, arr, [thisArg])**: Standard filter function. Filter *arr* by passing each element to *fn*. Each element of *arr* will be included in the result if and only if *fn* returns `true`. *thisArg* is an optional parameter that will be bound to `this` when fn is called. Otherwise, `this` will be bound to *arr*.
+* **shimlib.filter(fn, arr, [thisArg])**: Standard filter function. Filter *arr* by passing each element to *fn*. Each element of *arr* will be included in the result if and only if *fn* returns `true`. *thisArg* is an optional parameter that will be bound to `this` when *fn* is called. Otherwise, `this` will be bound to *arr*.
 
-* **shimlib.forEach(fn, arr, [thisArg])**: Standard forEach function. *fn* will be called for each element of *arr*. *thisArg* is an optional parameter that will be bound to `this` when fn is called. Otherwise, `this` will be bound to *arr*.
+* **shimlib.forEach(fn, arr, [thisArg])**: Standard forEach function. *fn* will be called for each element of *arr*. *thisArg* is an optional parameter that will be bound to `this` when *fn* is called. Otherwise, `this` will be bound to *arr*.
 
 * **shimlib.invoke(arr, methodName)**: Invoke *methodName* as a method of each element of *arr* and return an array of the results of each invocation. *methodName* should be a string. Any extra arguments will be passed on to the method.
 
