@@ -26,70 +26,6 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 	* **isString**
 	* **isFunction**
 	* **isNumber**
-* klass
-	* **klass(methodsAndProperties)**: A simple class maker for doing classical-style inheritance in Javascript. Returns a factory function (not a constructor) that will create a new instance of the klass. If *methodsAndProperties* contains an *initialize* function, the klass factory function will invoke *initialize* on every instance it creates.
-```javascript
-var Auto = klass({ 
-	hasWheels: true,
-	honkHorn: function() {
-		return "beep beep!";
-	},
-	initialize: function() {
-		this.sound = "vroom!";
-	}
-});
-
-var car = Auto({ numberOfDoors: 4, weightInTons: 1 });
-var truck = Auto({ numberOfDoors: 2, weightInTons: 3 });
-
-car.sound === "vroom!";
-truck.sound === "vroom!";
-car.numberOfDoors === 4;
-truck.numberOfDoors === 2;
-```
-
-	* **klass.extend(methodsAndProperties)**: Creates a new klass with all the methods and properties from *klass*, extended with the specified methods and properties.
-```javascript
-var HybridAuto = Auto.extend({
-	hybridEngine: true
-});
-
-var prius = HybridAuto();
-prius.hasWheels === true;
-prius.honkHorn === "beep beep!";
-prius.hybridEngine === true;
-```
-
-	* **klass.private(privObj)**: Add private values to this *klass*. Private values are shared amongst all instances of this *klass*.
-```javascript
-var CIAOfficer = klass({
-	lawEnforcement: true,
-	bureau: 'CIA'
-});
-
-CIAOfficer.private({ secretKey: 'ABCD1234', address: '1600 Penn Ave' });
-
-var jerry = CIAOfficer({ name: 'Jerry' });
-jerry.secretKey === undefined;
-CIAOfficer.secretKey === undefined;
-```
-
-	* **klass.privateMethod(name, fn)**: Add a new method to this *klass* which has access to the private values of the *klass*. *name* is the method's name. When *fn* is invoked on instances of *klass*, *fn* will be passed an object representing the private values of the *klass*.
-```javascript
-var confirmSecretKey = function(potentialSecret, _private) {
-	return _private.secretKey === potentialSecret;	
-};
-
-CIAOfficer.privateMethod('confirmSecretKey', confirmSecretKey);
-jerry.confirmSecretKey('ABCD1234') === true;
-```
-
-	* **klass.static(staticObj)**: Add static values to this *klass*. Static values are properties of the *klass* itself, not the instances of *klass*.
-```javascript
-Auto.static({ allUseGasoline: false });
-
-Auto.allUseGasoline === false;
-```
 
 * Number
 	* **toFixed(n, precision)**: Returns a string representing *n* with *precision* digits after the decimal point. **Note: Currently, toFixed() truncates the number and does not round it. This does not match the spec.**
@@ -104,10 +40,81 @@ Auto.allUseGasoline === false;
 	* **fromQueryString(qs)**: Deserialize *qs* into a Javascript object.
 * String
 	* **strip(s)**: strip whitespace from beginning and end of *s*.
-Times
+* Times
 	* **timesString(s, times)**: Return a new string where *s* is repeated *times* number of times.
 	* **timesValue(val, times)**: Return a new array where *val* is repeated *times* number of times.
 	* **times(fn, numTimes, [context])**: Call *fn* *numTimes* times. Optionally, *context* will be bound to `this` when *fn* is called. If *fn* is a string, delegates to *timesString()*. If *fn* is otherwise not a function, delegates to *timesValue()*.
+
+#### Klass
+
+Shimlib provides a simple class maker for doing classical-style inheritance in Javascript.
+
+* **shimlib.klass(methodsAndProperties)**: Returns a factory function (not a constructor), representing the klass, that will create a new instance of the klass when called. If *methodsAndProperties* contains an *initialize* function, *initialize* will be called on every new instance of *klass*.
+
+```javascript
+var Auto = shimlib.klass({ 
+	hasWheels: true,
+	honkHorn: function() {
+		return "beep beep!";
+	},
+	initialize: function() {
+		this.description = this.numberOfDoors + ' doors, ' + this.weightInTons + ' tons';
+	}
+});
+
+var car = Auto({ numberOfDoors: 4, weightInTons: 2 });
+var truck = Auto({ numberOfDoors: 2, weightInTons: 3 });
+
+car.description === "4 doors, 2 tons";
+truck.description === "2 doors, 3 tons";
+
+car.honkHorn() === "beep beep!"
+truck.honkHorn() === "beep beep!"
+```
+
+**IMPORTANT: DON'T CALL YOUR *klass* WITH `new`.** (It should still work even if you accidentally use `new`. But don't do it.)
+
+`//Don't do this!`  
+~~`var car2 = new Auto();`~~
+
+
+* **klass.extend(methodsAndProperties)**: Creates a new klass with all the methods and properties from *klass*, extended with the specified methods and properties.
+```javascript
+var HybridAuto = Auto.extend({
+	hybridEngine: true
+});
+
+var prius = HybridAuto();
+prius.hasWheels === true;
+prius.honkHorn === "beep beep!";
+prius.hybridEngine === true;
+```
+
+* **klass.private(privObj)**: Add private values to this *klass*. Private values are shared amongst all instances of this *klass*.
+```javascript
+HybridAuto.secret({ keyCombination: 'ABCD1234' });
+
+prius.keyCombination === undefined;
+HybridAuto.keyCombination === undefined;
+```
+
+* **klass.privateMethod(name, fn)**: Add a new method to this *klass* which has access to the private values of the *klass*. *name* is the method's name. When *fn* is invoked on instances of *klass*, *fn* will be passed an object representing the private values of the *klass*, as the last argument to *fn*.
+```javascript
+var confirmSecret = function(potentialSecret, _private) {
+	return _private.keyCombination === potentialSecret;	
+};
+
+HybridAuto.privateMethod('confirmSecretKey', confirmSecretKey);
+
+prius.confirmSecret('ABCD1234') === true;
+```
+
+* **klass.static(staticObj)**: Add static values to this *klass*. Static values are properties of the *klass* itself, not the instances of *klass*.
+```javascript
+Auto.static({ allUseGasoline: false });
+
+Auto.allUseGasoline === false;
+```
 
 ## Tests & Tools
 
