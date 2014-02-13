@@ -18,7 +18,7 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 
 * **shimlib.pickRandom(arr)**: Returns a randomly-selected element of *arr*.
 
-* **shimlib.pluck(arr, propertyName)**: Returns an array representing the value of *propertyName* for each element in *arr*. 
+* **shimlib.pluck(arr, propertyName)**: Gets the value of *propertyName* from each element in *arr* and returns a new array with the values.
 
 #### Function
 
