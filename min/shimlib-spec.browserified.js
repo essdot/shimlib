@@ -229,7 +229,7 @@
 		var _private = {};
 		var _static = {};
 
-		klass.extend = function klassExtend(o, p) {
+		klass.extend = function klassExtend(o) {
 			var newMethodsAndProps = {};
 			shimlibObject.extend(newMethodsAndProps, methodsAndProps);
 			shimlibObject.extend(newMethodsAndProps, o || {});
@@ -237,6 +237,7 @@
 			var newKlass = shimlibKlass(newMethodsAndProps);
 			newKlass.private(_private);
 			newKlass.static(_static);
+			newKlass.$super = klass;
 
 			return newKlass;
 		};
@@ -658,6 +659,8 @@ module.exports=require(6)
 },{}],13:[function(require,module,exports){
 module.exports=require(9)
 },{"shimlib-is":11}],14:[function(require,module,exports){
+describe('shimlib', function() {
+
 describe('shimlib array', function() {
 	shimlibArray = require('../../app/shimlib-array');
 
@@ -978,6 +981,10 @@ describe('shimlib array', function() {
 		expect(shimlibArray.pluck(arr2, 'yitta')).to.deep.equal([]);
 	});
 });
+
+});
+describe('shimlib', function() {
+
 describe('shimlib function', function() {
 	var shimlibFunction = require('../../app/shimlib-function');
 	
@@ -1034,6 +1041,8 @@ describe('shimlib function', function() {
 		var composed3 = shimlibFunction.compose(func3, func2, func1);
 		expect(composed3()).to.equal(15);
 	});
+});
+
 });
 describe('shimlib is', function() {
 	shimlibIs = require('../../app/shimlib-is');
@@ -1184,7 +1193,7 @@ describe('shimlib klass', function() {
 				return powerSource;
 			},
 
-			initialize: function(o) {
+			initialize: function() {
 				this.count = count++;
 			}
 		});
@@ -1200,6 +1209,9 @@ describe('shimlib klass', function() {
 		var Machine = shimlibKlass.klass({
 			machineKind: undefined,
 			isMachine: true,
+			ping: function() {
+				return 'ping!';
+			}
 		});
 
 		Machine.static({ likesPower: true });
@@ -1215,6 +1227,7 @@ describe('shimlib klass', function() {
 
 		var nukeMachine = NuclearMachine({ modelNumber: '1234' });
 
+		expect(NuclearMachine.$super).to.equal(Machine);
 		expect(Machine.likesPower).to.equal(true);
 		expect(NuclearMachine.likesPower).to.equal(true);
 
@@ -1222,6 +1235,7 @@ describe('shimlib klass', function() {
 		expect(nukeMachine.modelNumber).to.equal('1234');
 		expect(nukeMachine.meltdown).to.be.a('function');
 		expect(nukeMachine.machineKind).to.equal('nuclear');
+		expect(nukeMachine.ping()).to.equal('ping!');
 
 		var plainMachine = Machine({ machineKind: 'plain' });
 

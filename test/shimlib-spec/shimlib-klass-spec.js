@@ -100,7 +100,7 @@ describe('shimlib klass', function() {
 				return powerSource;
 			},
 
-			initialize: function(o) {
+			initialize: function() {
 				this.count = count++;
 			}
 		});
@@ -116,6 +116,9 @@ describe('shimlib klass', function() {
 		var Machine = shimlibKlass.klass({
 			machineKind: undefined,
 			isMachine: true,
+			ping: function() {
+				return 'ping!';
+			}
 		});
 
 		Machine.static({ likesPower: true });
@@ -131,6 +134,7 @@ describe('shimlib klass', function() {
 
 		var nukeMachine = NuclearMachine({ modelNumber: '1234' });
 
+		expect(NuclearMachine.$super).to.equal(Machine);
 		expect(Machine.likesPower).to.equal(true);
 		expect(NuclearMachine.likesPower).to.equal(true);
 
@@ -138,6 +142,7 @@ describe('shimlib klass', function() {
 		expect(nukeMachine.modelNumber).to.equal('1234');
 		expect(nukeMachine.meltdown).to.be.a('function');
 		expect(nukeMachine.machineKind).to.equal('nuclear');
+		expect(nukeMachine.ping()).to.equal('ping!');
 
 		var plainMachine = Machine({ machineKind: 'plain' });
 

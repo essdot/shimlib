@@ -66,7 +66,7 @@
 		var _private = {};
 		var _static = {};
 
-		klass.extend = function klassExtend(o, p) {
+		klass.extend = function klassExtend(o) {
 			var newMethodsAndProps = {};
 			shimlibObject.extend(newMethodsAndProps, methodsAndProps);
 			shimlibObject.extend(newMethodsAndProps, o || {});
@@ -74,6 +74,7 @@
 			var newKlass = shimlibKlass(newMethodsAndProps);
 			newKlass.private(_private);
 			newKlass.static(_static);
+			newKlass.$super = klass;
 
 			return newKlass;
 		};
