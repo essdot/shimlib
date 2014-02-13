@@ -78,7 +78,7 @@ truck.honkHorn() === "beep beep!"
 ~~`var car2 = new Auto();`~~
 
 
-* **klass.extend(methodsAndProperties)**: Creates a new klass with all the methods and properties from *klass*, extended with the specified methods and properties.
+* **klass.extend(methodsAndProperties)**: Creates a new klass with all the methods and properties from *klass*, extended with the specified methods and properties. The new klass will have a property *$super* that refers to the parent klass.
 ```javascript
 var HybridAuto = Auto.extend({
 	hybridEngine: true
@@ -88,6 +88,7 @@ var prius = HybridAuto();
 prius.hasWheels === true;
 prius.honkHorn === "beep beep!";
 prius.hybridEngine === true;
+HybridAuto.$super === Auto;
 ```
 
 * **klass.private(privObj)**: Add private values to this *klass*. Private values are shared amongst all instances of this *klass*.
@@ -98,13 +99,13 @@ prius.keyCombination === undefined;
 HybridAuto.keyCombination === undefined;
 ```
 
-* **klass.privateMethod(name, fn)**: Add a new method to this *klass* which has access to the private values of the *klass*. *name* is the method's name. When *fn* is invoked on instances of *klass*, *fn* will be passed an object representing the private values of the *klass*, as the last argument to *fn*.
+* **klass.privateMethod(name, fn)**: Add a new method to *klass* which has access to the private values of the *klass*. *name* is the method's name. When *fn* is invoked on instances of *klass*, *fn* will be passed an object representing the private values of the *klass*, as the last argument to *fn*.
 ```javascript
 var confirmSecret = function(potentialSecret, _private) {
 	return _private.keyCombination === potentialSecret;	
 };
 
-HybridAuto.privateMethod('confirmSecretKey', confirmSecretKey);
+HybridAuto.privateMethod('confirmSecret', confirmSecret);
 
 prius.confirmSecret('ABCD1234') === true;
 ```
