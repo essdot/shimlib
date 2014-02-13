@@ -34,10 +34,12 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 * **shimlib.isNumber**
 
 #### Number
+
 * **shimlib.toFixed(n, precision)**: Returns a string representing *n* with *precision* digits after the decimal point.  
 **Note: Currently, toFixed() truncates the number and does not round it. This does not match the spec.**
 
 #### Object
+
 * **shimlib.create(o)**: Create a new object inheriting from *o*. The prototype of the new object's constructor will be *o*.
 
 * **shimlib.extend(destination, sources)**: Replace all values in *destination* with those in one or more *sources*.
@@ -50,7 +52,16 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 
 * **shimlib.toQueryString(o)**: Serialize *o* as a query string.
 
-* **shimlib.fromQueryString(qs)**: Deserialize *qs* into a Javascript object.
+* **shimlib.fromQueryString(qs)**: Deserialize *qs* into a Javascript object. Numeric values are deserialized as numbers. Multiple values with the same key will be deserialized as an array. Keys without values will be deserialized as empty strings.
+
+```javascript
+var qs = 'section=45&id=abc&arr=1&arr=2&arr=3&empty';
+var qsObj = { section: 45, id: 'abc', arr: [1, 2, 3], empty: '' };
+
+shimlib.toQueryString(qsObj) === qs;
+// returns an object with properties like qsObj
+shimlib.fromQueryString(qs);
+```
 
 #### String
 * **shimlib.strip(s)**: strip whitespace from beginning and end of *s*.
