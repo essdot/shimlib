@@ -87,7 +87,7 @@ var HybridAuto = Auto.extend({
 var prius = HybridAuto({ numberOfDoors: 4, weightInTons: 0 });
 prius.hasWheels === true;
 prius.honkHorn === "beep beep!";
-prius.description = "4 doors, 0 tons";
+prius.description === "4 doors, 0 tons";
 prius.hybridEngine === true;
 HybridAuto.$super === Auto;
 ```
