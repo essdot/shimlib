@@ -112,11 +112,12 @@ car.honkHorn() === "beep beep!"
 truck.honkHorn() === "beep beep!"
 ```
 
-**IMPORTANT: DON'T CALL YOUR *klass* WITH `new`.** (It should still work even if you accidentally use `new`. But don't do it.)
+**IMPORTANT: DON'T CALL YOUR *klass* WITH `new`:**
 
 `//Don't do this!`  
 ~~`var car2 = new Auto();`~~
 
+(It should still work even if you accidentally use `new`. But don't do it.)
 
 * **klass.extend(methodsAndProperties)**: Creates a new klass with all the methods and properties from *klass*, extended with the specified methods and properties. The new klass will have a property *$super* that refers to the parent klass.
 ```javascript
