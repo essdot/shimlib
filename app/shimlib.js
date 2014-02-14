@@ -1,15 +1,15 @@
 (function shimlibInit(){
 	"use strict";
 
-	var shimlibArray = require('shimlib-array');
-	var shimlibIs = require('shimlib-is');
-	var shimlibKlass = require('shimlib-klass');
-	var shimlibObject = require('shimlib-object');
-	var shimlibFunction = require('shimlib-function');
-	var shimlibNumber = require('shimlib-number');
-	var shimlibQs = require('shimlib-qs');
-	var shimlibString = require('shimlib-string');
-	var shimlibTimes = require('shimlib-times');
+	var shimlibArray = require('./shimlib-array');
+	var shimlibIs = require('./shimlib-is');
+	var shimlibKlass = require('./shimlib-klass');
+	var shimlibObject = require('./shimlib-object');
+	var shimlibFunction = require('./shimlib-function');
+	var shimlibNumber = require('./shimlib-number');
+	var shimlibQs = require('./shimlib-qs');
+	var shimlibString = require('./shimlib-string');
+	var shimlibTimes = require('./shimlib-times');
 
 	var shimlibObj = {
 		bind: shimlibFunction.bind,
