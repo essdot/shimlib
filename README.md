@@ -133,7 +133,7 @@ prius.hybridEngine === true;
 HybridAuto.$super === Auto;
 ```
 
-* **klass.private(privObj)**: Add private values to this *klass*. Private values are shared amongst all instances of this *klass*.
+* **klass.private(privObj)**: Add private values to this *klass*. Private values are shared between all instances of this *klass*.
 ```javascript
 HybridAuto.private({ keyCombination: 'ABCD1234' });
 
@@ -141,7 +141,7 @@ prius.keyCombination === undefined;
 HybridAuto.keyCombination === undefined;
 ```
 
-* **klass.privateMethod(name, fn)**: Add a new method to *klass* which has access to the private values of *klass*. *name* is the method's name. When the private method is invoked on instances of *klass*, the private method will be passed an object representing the private values of the *klass*, as the last argument to the method.
+* **klass.privateMethod(name, fn)**: Add a new method to instances of *klass* which has access to the private values of *klass*. *name* is the method's name. When the private method is invoked on instances of *klass*, the private method will be passed an object representing the private values of the *klass*, as the last argument to the method.
 ```javascript
 HybridAuto.privateMethod('confirmSecret', function(potentialSecret, _private) {
 	return _private.keyCombination === potentialSecret;
