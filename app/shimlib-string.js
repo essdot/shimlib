@@ -3,7 +3,7 @@
 	
 	var _replace = String.prototype.replace;
 
-	var shimlibIs = require('shimlib-is');
+	var shimlibIs = require('./shimlib-is');
 	
 	function shimlibStrip(s) {
 		if(!shimlibIs.isString(s)) { return; }

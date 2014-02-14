@@ -122,4 +122,11 @@ describe('shimlib object', function() {
 		expect(obj.myTeam2).to.equal('Supersonics');
 		expect(obj2.myTeam).to.equal('Lakers');
 	});
+
+	it('without', function() {
+		var obj1 = { rain: true, snow: false, sleet: true };
+		var obj2 = { snow: false };
+
+		expect(shimlibObject.without(obj1, [ 'rain', 'sleet' ])).to.deep.equal(obj2);
+	});
 });

@@ -4,7 +4,7 @@
 
 	var _undefined = void 0;
 
-	var shimlibIs = require('shimlib-is');
+	var shimlibIs = require('./shimlib-is');
 
 	function shimlibFilter(fn, arr, thisArg) {
 		if (!fn) { return; }
@@ -99,7 +99,7 @@
 
 	module.exports = shimlibArray;
 })();
-},{"shimlib-is":11}],2:[function(require,module,exports){
+},{"./shimlib-is":3}],2:[function(require,module,exports){
 (function shimlibFunctionModule() {
 	"use strict";
 	
@@ -171,8 +171,8 @@
 	var _slice = [].slice.call.bind([].slice);
 	var _undefined = void 0;
 
-	var shimlibObject = require('shimlib-object');
-	var shimlibArray = require('shimlib-array');
+	var shimlibObject = require('./shimlib-object');
+	var shimlibArray = require('./shimlib-array');
 
 	function objectIsGlobal(o) {
 		function getGlobal() { return this; }
@@ -250,11 +250,11 @@
 		};
 
 		klass.static = function klassStatic(staticObj) {
-			shimlibArray.forEach(function(k) {
-				klass[k] = staticObj[k];
-				_static[k] = staticObj[k];
+			var badKeys = [ 'addMethod', 'extend', 'method', 'privateMethod', 'private', 'static' ];
+			badKeys = badKeys.concat(shimlibObject.dangerousKeys);
 
-			}, shimlibObject.keys(staticObj));
+			shimlibObject.extendWithoutKeys(klass, badKeys, staticObj);
+			shimlibObject.extendWithoutKeys(_static, badKeys, staticObj);
 		};
 
 		return klass;
@@ -264,12 +264,12 @@
 		klass: shimlibKlass
 	};
 })();
-},{"shimlib-array":10,"shimlib-object":12}],5:[function(require,module,exports){
+},{"./shimlib-array":1,"./shimlib-object":6}],5:[function(require,module,exports){
 (function shimlibNumberModule() {
 	"use strict";
 
-	var shimlibIs = require('shimlib-is');
-	var shimlibTimes = require('shimlib-times');
+	var shimlibIs = require('./shimlib-is');
+	var shimlibTimes = require('./shimlib-times');
 
 	function shimlibToFixed(n, precision) {
 		if (!shimlibIs.isNumber(n)) { return; }
@@ -310,12 +310,14 @@
 
 	module.exports = shimlibNumber;
 })();
-},{"shimlib-is":11,"shimlib-times":13}],6:[function(require,module,exports){
+},{"./shimlib-is":3,"./shimlib-times":9}],6:[function(require,module,exports){
 (function shimlibObjectModule() {
 	"use strict";
 	
 	var _hasOwn = Object.prototype.hasOwnProperty;
 	var _undefined = void 0;
+
+	var dangerousKeys = [ 'constructor', 'toString', 'prototype', 'indexOf', 'length', 'hasOwnProperty', 'toLocaleString', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable' ];
 
 	function shimlibCreate(o) {
 		if (o === _undefined ||
@@ -346,6 +348,40 @@
 		return dest;
 	}
 
+	function shimlibExtendWithoutKeys(dest, badKeys) {
+		var sources = [].slice.call(arguments, 2);
+		if (dest === _undefined || sources[0] === _undefined) { return; }
+		if (badKeys === _undefined || badKeys[0] === _undefined) {
+			badKeys = [];
+		}
+
+		for (var sourceIndex = 0; sourceIndex < sources.length; sourceIndex++) {
+			var source = sources[sourceIndex];
+			var keys = shimlibKeys(source);
+
+			for (var i = 0; i < keys.length; i++) {
+				var key = keys[i];
+
+				if (badKeys.indexOf(key) !== -1) { continue; }
+
+				dest[key] = source[key];
+			}
+		}
+
+		return dest;
+	}
+
+	function shimlibWithout(o, keys) {
+		if(o === _undefined || !Array.isArray(keys)) { return; }
+		var newObj = shimlibExtend({}, o);
+
+		Array.prototype.forEach.call(keys, function(k) {
+			delete newObj[k];
+		});
+
+		return newObj;
+	}
+
 	function shimlibKeys(o) {
 		if (!o) { return; }
 
@@ -370,8 +406,11 @@
 		copyProp: shimlibCopyProperty,
 		copyProperty: shimlibCopyProperty,
 		create: shimlibCreate,
+		dangerousKeys: dangerousKeys,
 		extend: shimlibExtend,
-		keys: shimlibKeys
+		extendWithoutKeys: shimlibExtendWithoutKeys,
+		keys: shimlibKeys,
+		without: shimlibWithout
 	};
 
 	module.exports = shimlibObject;
@@ -383,8 +422,8 @@
 	var _hasOwn = Object.prototype.hasOwnProperty;
 	var _undefined = void 0;
 
-	var shimlibIs = require('shimlib-is');
-	var shimlibObject = require('shimlib-object');
+	var shimlibIs = require('./shimlib-is');
+	var shimlibObject = require('./shimlib-object');
 
 	function shimlibToQueryString(o) {
 		if (!o) { return; }
@@ -480,13 +519,13 @@
 
     module.exports = shimlibQs;
 })();
-},{"shimlib-is":11,"shimlib-object":12}],8:[function(require,module,exports){
+},{"./shimlib-is":3,"./shimlib-object":6}],8:[function(require,module,exports){
 (function shimlibStringModule() {
 	"use strict";
 	
 	var _replace = String.prototype.replace;
 
-	var shimlibIs = require('shimlib-is');
+	var shimlibIs = require('./shimlib-is');
 	
 	function shimlibStrip(s) {
 		if(!shimlibIs.isString(s)) { return; }
@@ -506,11 +545,11 @@
 
 	module.exports = shimlibString;
 })();
-},{"shimlib-is":11}],9:[function(require,module,exports){
+},{"./shimlib-is":3}],9:[function(require,module,exports){
 (function shimlibTimesModule() {
 	"use strict";
 
-	var shimlibIs = require('shimlib-is');
+	var shimlibIs = require('./shimlib-is');
 
 	function shimlibTimes(fn, numTimes, context) {
 		if(!numTimes || numTimes < 1) { return; }
@@ -557,175 +596,7 @@
 	};
 	module.exports = shimlibTimes;
 })();
-},{"shimlib-is":11}],10:[function(require,module,exports){
-(function shimlibArrayModule() {
-	"use strict";
-
-	var _slice = [].slice.call.bind([].slice);
-	var _undefined = void 0;
-
-	var shimlibIs = require('shimlib-is');
-
-	function shimlibFilter(fn, arr) {
-		if (!fn) { return; }
-
-		arr = arr || [];
-		var result = [];
-
-		for (var i = 0; i < arr.length; i++) {
-			if (fn(arr[i]) === true) {
-				result.push(arr[i]);
-			}
-		}
-
-		return result;
-	}
-
-	function shimlibForEach(fn, arr) {
-		if (!fn){ return; }
-
-		var thisObj = arr;
-
-		for (var i = 0; i < arr.length; i++) {
-			var current = arr[i];
-
-			fn.call(arr, current);
-		}
-	}
-
-	function shimlibMap(fn, arr) {
-		if (!fn || !arr) { return; }
-
-		var result = [];
-		for (var i = 0; i < arr.length; i++) {
-			
-			var args = _slice(arguments, 2);
-			args.unshift(arr[i]);
-
-			result[i] = fn.apply(arr, args);
-		}
-
-		return result;
-	}
-
-	function shimlibInvoke(fn, list, args) {
-		if (!args) {
-			args = [];
-		}
-		if (!shimlibIs.isArray(args)){
-			args = [args];
-		}
-
-		return shimlibMap(function(val){
-			if (shimlibIs.isString(fn)) {
-				if (!val[fn]) {
-					return;
-				}
-
-				fn = val[fn];
-			}
-
-			return fn.apply(val, args);
-		}, list);
-	}
-
-	function shimlibPickRandom(list) {
-		if (!shimlibIs.isArray(list)) { return; }
-		
-		var index = Math.floor(Math.random() * list.length);
-
-		return list[index];
-	}
-
-	function shimlibPluck(arr, key) {
-		var returnArr = [];
-
-		for (var i = 0; i < arr.length; i++) {
-			var item = arr[i];
-
-			if (!item || item[key] === _undefined) { continue; }
-			returnArr.push(item[key]);
-		}
-
-		return returnArr;
-	}
-
-	var shimlibArray = {
-		filter: shimlibFilter,
-		forEach: shimlibForEach,
-		invoke: shimlibInvoke,
-		map: shimlibMap,
-		pickRandom: shimlibPickRandom,
-		pluck: shimlibPluck
-	};
-
-	module.exports = shimlibArray;
-})();
-},{"shimlib-is":11}],11:[function(require,module,exports){
-module.exports=require(3)
-},{}],12:[function(require,module,exports){
-(function shimlibObjectModule() {
-	"use strict";
-	
-	var _hasOwn = Object.prototype.hasOwnProperty;
-	var _undefined = void 0;
-
-	function shimlibCreate(o) {
-		if (o === _undefined ||
-			o === null ||
-			typeof o !== 'object') {
-			return {};
-		}
-
-		function Ctor(){}
-		Ctor.prototype = o;
-		return new Ctor();
-	}
-
-	function shimlibExtend(dest, source) {
-		var keys = shimlibKeys(source);
-
-		for (var i = 0; i < keys.length; i++) {
-			var key = keys[i];
-			dest[key] = source[key];
-		}
-
-		return source;
-	}
-
-	function shimlibKeys(o) {
-		if (!o) { return; }
-
-		var keys = [];
-
-		for (var k in o) {
-			if (_hasOwn.call(o, k)) {
-				keys.push(k);
-			}
-		}
-
-		return keys;
-	}
-
-	function shimlibCopyProperty(obj, sourceName, destName) {
-		var descriptor = Object.getOwnPropertyDescriptor(obj, sourceName);
-
-		Object.defineProperty(obj, destName, descriptor);
-	}
-
-	var shimlibObject = {
-		copyProp: shimlibCopyProperty,
-		copyProperty: shimlibCopyProperty,
-		create: shimlibCreate,
-		extend: shimlibExtend,
-		keys: shimlibKeys
-	};
-
-	module.exports = shimlibObject;
-})();
-},{}],13:[function(require,module,exports){
-module.exports=require(9)
-},{"shimlib-is":11}],14:[function(require,module,exports){
+},{"./shimlib-is":3}],10:[function(require,module,exports){
 describe('shimlib array', function() {
 	shimlibArray = require('../../app/shimlib-array');
 
@@ -1532,6 +1403,13 @@ describe('shimlib object', function() {
 		expect(obj.myTeam2).to.equal('Supersonics');
 		expect(obj2.myTeam).to.equal('Lakers');
 	});
+
+	it('without', function() {
+		var obj1 = { rain: true, snow: false, sleet: true };
+		var obj2 = { snow: false };
+
+		expect(shimlibObject.without(obj1, [ 'rain', 'sleet' ])).to.deep.equal(obj2);
+	});
 });
 describe('shimlib query string', function(){
 	shimlibQs = require('../../app/shimlib-qs');
@@ -1919,4 +1797,4 @@ describe("Don't break when builtins altered", function() {
 	});
 
 });
-},{"../../app/shimlib-array":1,"../../app/shimlib-function":2,"../../app/shimlib-is":3,"../../app/shimlib-klass":4,"../../app/shimlib-number":5,"../../app/shimlib-object":6,"../../app/shimlib-qs":7,"../../app/shimlib-string":8,"../../app/shimlib-times":9}]},{},[14])
+},{"../../app/shimlib-array":1,"../../app/shimlib-function":2,"../../app/shimlib-is":3,"../../app/shimlib-klass":4,"../../app/shimlib-number":5,"../../app/shimlib-object":6,"../../app/shimlib-qs":7,"../../app/shimlib-string":8,"../../app/shimlib-times":9}]},{},[10])

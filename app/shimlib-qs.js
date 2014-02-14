@@ -4,8 +4,8 @@
 	var _hasOwn = Object.prototype.hasOwnProperty;
 	var _undefined = void 0;
 
-	var shimlibIs = require('shimlib-is');
-	var shimlibObject = require('shimlib-object');
+	var shimlibIs = require('./shimlib-is');
+	var shimlibObject = require('./shimlib-object');
 
 	function shimlibToQueryString(o) {
 		if (!o) { return; }

@@ -3,7 +3,7 @@
 
 	var _undefined = void 0;
 
-	var shimlibIs = require('shimlib-is');
+	var shimlibIs = require('./shimlib-is');
 
 	function shimlibFilter(fn, arr, thisArg) {
 		if (!fn) { return; }

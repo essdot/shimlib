@@ -1,8 +1,8 @@
 (function shimlibNumberModule() {
 	"use strict";
 
-	var shimlibIs = require('shimlib-is');
-	var shimlibTimes = require('shimlib-times');
+	var shimlibIs = require('./shimlib-is');
+	var shimlibTimes = require('./shimlib-times');
 
 	function shimlibToFixed(n, precision) {
 		if (!shimlibIs.isNumber(n)) { return; }

@@ -4,8 +4,8 @@
 	var _slice = [].slice.call.bind([].slice);
 	var _undefined = void 0;
 
-	var shimlibObject = require('shimlib-object');
-	var shimlibArray = require('shimlib-array');
+	var shimlibObject = require('./shimlib-object');
+	var shimlibArray = require('./shimlib-array');
 
 	function objectIsGlobal(o) {
 		function getGlobal() { return this; }
@@ -83,11 +83,11 @@
 		};
 
 		klass.static = function klassStatic(staticObj) {
-			shimlibArray.forEach(function(k) {
-				klass[k] = staticObj[k];
-				_static[k] = staticObj[k];
+			var badKeys = [ 'addMethod', 'extend', 'method', 'privateMethod', 'private', 'static' ];
+			badKeys = badKeys.concat(shimlibObject.dangerousKeys);
 
-			}, shimlibObject.keys(staticObj));
+			shimlibObject.extendWithoutKeys(klass, badKeys, staticObj);
+			shimlibObject.extendWithoutKeys(_static, badKeys, staticObj);
 		};
 
 		return klass;

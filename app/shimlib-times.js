@@ -1,7 +1,7 @@
 (function shimlibTimesModule() {
 	"use strict";
 
-	var shimlibIs = require('shimlib-is');
+	var shimlibIs = require('./shimlib-is');
 
 	function shimlibTimes(fn, numTimes, context) {
 		if(!numTimes || numTimes < 1) { return; }
