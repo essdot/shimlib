@@ -36,8 +36,12 @@
 		var result = [];
 		var thisObj = thisArg || arr;
 
-		for (var i = 0; i < arr.length; i++) {
-			result[i] = fn.call(thisObj, arr[i], i, arr);
+
+		for (var i = 0, j = 0; i < arr.length; i++) {
+			if (arr[i] === undefined) { continue; }
+
+			result[j] = fn.call(thisObj, arr[i], i, arr);
+			j++;
 		}
 
 		return result;

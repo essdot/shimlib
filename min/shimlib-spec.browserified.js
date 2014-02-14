@@ -37,8 +37,12 @@
 		var result = [];
 		var thisObj = thisArg || arr;
 
-		for (var i = 0; i < arr.length; i++) {
-			result[i] = fn.call(thisObj, arr[i], i, arr);
+
+		for (var i = 0, j = 0; i < arr.length; i++) {
+			if (arr[i] === undefined) { continue; }
+
+			result[j] = fn.call(thisObj, arr[i], i, arr);
+			j++;
 		}
 
 		return result;
@@ -1008,6 +1012,18 @@ describe('shimlib array', function() {
 		iterateObject.length = 3;
 		mapResult = shimlibArray.map(func, iterateObject);
 		expect(mapResult).to.deep.equal([ 'first value', 'second value', 'third value' ]);
+	});
+
+	it('map skips undefined elements', function() {
+		var arr = [ 1, 2, undefined, 3, undefined, 5 ];
+		var arr2 = [ undefined, undefined, undefined ];
+		var arr3 = [ undefined, /re/, undefined ];
+
+		var fn = function(o) { return o.toString(); };
+
+		expect(shimlibArray.map(fn, arr)).to.deep.equal([ '1', '2', '3', '5' ]);
+		expect(shimlibArray.map(fn, arr2)).to.deep.equal([ ]);
+		expect(shimlibArray.map(fn, arr3)).to.deep.equal([ '/re/' ]);
 	});
 
 	it('pick random', function(){

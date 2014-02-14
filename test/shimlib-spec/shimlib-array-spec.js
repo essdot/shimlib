@@ -286,6 +286,18 @@ describe('shimlib array', function() {
 		expect(mapResult).to.deep.equal([ 'first value', 'second value', 'third value' ]);
 	});
 
+	it('map skips undefined elements', function() {
+		var arr = [ 1, 2, undefined, 3, undefined, 5 ];
+		var arr2 = [ undefined, undefined, undefined ];
+		var arr3 = [ undefined, /re/, undefined ];
+
+		var fn = function(o) { return o.toString(); };
+
+		expect(shimlibArray.map(fn, arr)).to.deep.equal([ '1', '2', '3', '5' ]);
+		expect(shimlibArray.map(fn, arr2)).to.deep.equal([ ]);
+		expect(shimlibArray.map(fn, arr3)).to.deep.equal([ '/re/' ]);
+	});
+
 	it('pick random', function(){
 		var list = [1, 2, 3, 4, 5, 6, 7, 8];
 		var randomPick = shimlibArray.pickRandom(list);
