@@ -47,10 +47,10 @@
 		return keys;
 	}
 
-	function shimlibCopyProperty(obj, sourceName, destName) {
-		var descriptor = Object.getOwnPropertyDescriptor(obj, sourceName);
+	function shimlibCopyProperty(sourceObj, sourceName, destObj, destName) {
+		var descriptor = Object.getOwnPropertyDescriptor(sourceObj, sourceName);
 
-		Object.defineProperty(obj, destName, descriptor);
+		Object.defineProperty(destObj, destName, descriptor);
 	}
 
 	var shimlibObject = {

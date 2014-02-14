@@ -206,9 +206,17 @@ describe("Don't break when builtins altered", function() {
 		expect(chai.Assertion.prototype.hasOwnProperty('True')).to.equal(false);
 		expect(chai.Assertion.prototype.hasOwnProperty('Undefined')).to.equal(false);
 
-		shimlibObject.copyProperty(chai.Assertion.prototype, 'false', 'False');
-		shimlibObject.copyProperty(chai.Assertion.prototype, 'true', 'True');
-		shimlibObject.copyProperty(chai.Assertion.prototype, 'undefined', 'Undefined');
+		shimlibObject.copyProperty(
+			chai.Assertion.prototype, 'false', 
+			chai.Assertion.prototype, 'False');
+
+		shimlibObject.copyProperty(
+			chai.Assertion.prototype, 'true', 
+			chai.Assertion.prototype, 'True');
+
+		shimlibObject.copyProperty(
+			chai.Assertion.prototype, 'undefined', 
+			chai.Assertion.prototype, 'Undefined');
 
 		expect(chai.Assertion.prototype.hasOwnProperty('False')).to.equal(true);
 		expect(chai.Assertion.prototype.hasOwnProperty('True')).to.equal(true);

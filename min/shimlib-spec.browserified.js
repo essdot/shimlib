@@ -356,10 +356,10 @@
 		return keys;
 	}
 
-	function shimlibCopyProperty(obj, sourceName, destName) {
-		var descriptor = Object.getOwnPropertyDescriptor(obj, sourceName);
+	function shimlibCopyProperty(sourceObj, sourceName, destObj, destName) {
+		var descriptor = Object.getOwnPropertyDescriptor(sourceObj, sourceName);
 
-		Object.defineProperty(obj, destName, descriptor);
+		Object.defineProperty(destObj, destName, descriptor);
 	}
 
 	var shimlibObject = {
@@ -1488,9 +1488,13 @@ describe('shimlib object', function() {
 		expect(Array.isArray(arrayObj)).to.equal(false);
 	});
 
-	it('copy getter', function() {
+	it('copy property', function() {
 		var obj = {
 			team: 'Supersonics'
+		};
+
+		var obj2 = {
+			team: 'Lakers'
 		};
 
 		Object.defineProperty(obj, 'myTeam', {
@@ -1503,11 +1507,14 @@ describe('shimlib object', function() {
 
 		expect(obj.hasOwnProperty('myTeam2')).to.equal(false);
 
-		shimlibObject.copyProperty(obj, 'myTeam', 'myTeam2');
+		shimlibObject.copyProperty(obj, 'myTeam', obj, 'myTeam2');
+		shimlibObject.copyProperty(obj, 'myTeam', obj2, 'myTeam');
 
 		expect(obj.hasOwnProperty('myTeam2')).to.equal(true);
+		expect(obj2.hasOwnProperty('myTeam')).to.equal(true);
 
 		expect(obj.myTeam2).to.equal('Supersonics');
+		expect(obj2.myTeam).to.equal('Lakers');
 	});
 });
 describe('shimlib query string', function(){
@@ -1858,9 +1865,17 @@ describe("Don't break when builtins altered", function() {
 		expect(chai.Assertion.prototype.hasOwnProperty('True')).to.equal(false);
 		expect(chai.Assertion.prototype.hasOwnProperty('Undefined')).to.equal(false);
 
-		shimlibObject.copyProperty(chai.Assertion.prototype, 'false', 'False');
-		shimlibObject.copyProperty(chai.Assertion.prototype, 'true', 'True');
-		shimlibObject.copyProperty(chai.Assertion.prototype, 'undefined', 'Undefined');
+		shimlibObject.copyProperty(
+			chai.Assertion.prototype, 'false', 
+			chai.Assertion.prototype, 'False');
+
+		shimlibObject.copyProperty(
+			chai.Assertion.prototype, 'true', 
+			chai.Assertion.prototype, 'True');
+
+		shimlibObject.copyProperty(
+			chai.Assertion.prototype, 'undefined', 
+			chai.Assertion.prototype, 'Undefined');
 
 		expect(chai.Assertion.prototype.hasOwnProperty('False')).to.equal(true);
 		expect(chai.Assertion.prototype.hasOwnProperty('True')).to.equal(true);
