@@ -30,6 +30,7 @@
 			}
 		}
 
+		return dest;
 	}
 
 	function shimlibKeys(o) {
