@@ -67,8 +67,7 @@
 		var _static = {};
 
 		klass.extend = function klassExtend(o) {
-			var newMethodsAndProps = {};
-			shimlibObject.extend(newMethodsAndProps, methodsAndProps);
+			var newMethodsAndProps = Object.create(methodsAndProps);
 			shimlibObject.extend(newMethodsAndProps, o || {});
 
 			var newKlass = shimlibKlass(newMethodsAndProps);

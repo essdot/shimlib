@@ -230,8 +230,7 @@
 		var _static = {};
 
 		klass.extend = function klassExtend(o) {
-			var newMethodsAndProps = {};
-			shimlibObject.extend(newMethodsAndProps, methodsAndProps);
+			var newMethodsAndProps = Object.create(methodsAndProps);
 			shimlibObject.extend(newMethodsAndProps, o || {});
 
 			var newKlass = shimlibKlass(newMethodsAndProps);
@@ -340,6 +339,7 @@
 			}
 		}
 
+		return dest;
 	}
 
 	function shimlibKeys(o) {
@@ -1298,6 +1298,13 @@ describe('shimlib klass', function() {
 		expect(plainMachine.isMachine).to.equal(true);
 		expect(plainMachine.modelNumber).to.equal(undefined);
 		expect(plainMachine.meltdown).to.equal(undefined);
+
+		Machine.addMethod('powerOn', function() {
+			return 'bwoop';
+		});
+
+		expect(plainMachine.powerOn()).to.equal('bwoop');
+		expect(nukeMachine.powerOn()).to.equal('bwoop');
 	});
 
 	it('static', function() {
@@ -1631,6 +1638,8 @@ describe('shimlib times', function() {
 	});
 
 	it('times value', function() {
+		expect(shimlibTimes.times(undefined, 5)).to.deep.equal([ undefined, undefined, undefined, undefined, undefined ]);
+		expect(shimlibTimes.times(null, 4)).to.deep.equal([ null, null, null, null ]);
 		expect(shimlibTimes.times(3, 3)).to.deep.equal([3, 3, 3]);
 		expect(shimlibTimes.times(6, 2)).to.deep.equal([6, 6]);
 		expect(shimlibTimes.times({ obj: true }, 4)).to.deep.equal([

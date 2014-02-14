@@ -150,6 +150,13 @@ describe('shimlib klass', function() {
 		expect(plainMachine.isMachine).to.equal(true);
 		expect(plainMachine.modelNumber).to.equal(undefined);
 		expect(plainMachine.meltdown).to.equal(undefined);
+
+		Machine.addMethod('powerOn', function() {
+			return 'bwoop';
+		});
+
+		expect(plainMachine.powerOn()).to.equal('bwoop');
+		expect(nukeMachine.powerOn()).to.equal('bwoop');
 	});
 
 	it('static', function() {
