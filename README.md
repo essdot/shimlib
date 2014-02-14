@@ -69,7 +69,10 @@ shimlib.fromQueryString(qs);
 * **shimlib.strip(s)**: strip whitespace from beginning and end of *s*.
 
 #### Times
-* **shimlib.times(arg, numTimes, [context])**: Call *arg* *numTimes* times. Optionally, *context* will be bound to `this` when *fn* is called. If *arg* is a string, returns a new string with *arg* repeated *numTimes* times. If *arg* is otherwise not a function, returns an array of length *times*, with all elements equal to *arg*.
+* **shimlib.times(arg, numTimes, [context])**
+	* If arg is a function, call *arg* *numTimes* times. Optionally, *context* will be bound to `this` when *fn* is called. 
+	* If *arg* is a string, returns a new string with *arg* repeated *numTimes* times. 
+	* If *arg* is otherwise not a function, returns an array of length *times*, with all elements equal to *arg*.
 
 ```javascript
 //logs 'hi' three times
