@@ -50,6 +50,8 @@ Type identity functions.
 
 * **shimlib.copyProperty(sourceObj, sourceName, destObj, destName)**: Take *sourceObj*'s property named *sourceName*, and copy it to *destObj.destName*. Convenient for getters which can't be referenced directly without invoking them.
 
+* **shimlib.without(o, keys)**: Return a new object with *o*'s properties, except the properties in *keys*.
+
 #### Query Strings
 
 * **shimlib.toQueryString(o)**: Serialize *o* as a query string.
