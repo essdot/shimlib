@@ -49,6 +49,25 @@
 		return result;
 	}
 
+	function shimlibSome(fn, arr, thisArg) {
+		if (!fn || !arr) { return; }
+		var thisObj = thisArg || arr;
+
+		debugger;
+
+		for (var i = 0; i < arr.length; i++) {
+			if (arr[i] === _undefined) { continue; }
+
+			var currentResult = fn.call(thisObj, arr[i], i, arr);
+
+			if (!!currentResult === true) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	function shimlibInvoke(arr, methodName, args) {
 		if(!shimlibIs.isString(methodName)) {
 			throw new TypeError('methodName should be a string');
@@ -95,7 +114,8 @@
 		invoke: shimlibInvoke,
 		map: shimlibMap,
 		pickRandom: shimlibPickRandom,
-		pluck: shimlibPluck
+		pluck: shimlibPluck,
+		some: shimlibSome
 	};
 
 	module.exports = shimlibArray;

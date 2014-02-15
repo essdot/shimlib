@@ -50,6 +50,25 @@
 		return result;
 	}
 
+	function shimlibSome(fn, arr, thisArg) {
+		if (!fn || !arr) { return; }
+		var thisObj = thisArg || arr;
+
+		debugger;
+
+		for (var i = 0; i < arr.length; i++) {
+			if (arr[i] === _undefined) { continue; }
+
+			var currentResult = fn.call(thisObj, arr[i], i, arr);
+			
+			if (!!currentResult === true) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	function shimlibInvoke(arr, methodName, args) {
 		if(!shimlibIs.isString(methodName)) {
 			throw new TypeError('methodName should be a string');
@@ -96,7 +115,8 @@
 		invoke: shimlibInvoke,
 		map: shimlibMap,
 		pickRandom: shimlibPickRandom,
-		pluck: shimlibPluck
+		pluck: shimlibPluck,
+		some: shimlibSome
 	};
 
 	module.exports = shimlibArray;
@@ -284,11 +304,11 @@
 			return "NaN";
 		}
 
-		if (!shimlibIs.isNumber(precision)) {
-			precision = 0;
+		if (!shimlibIs.isNumber(n)) {
+			throw new TypeError('n must be a number or NaN');
 		}
 
-		if (precision === 0) {
+		if (!shimlibIs.isNumber(precision) || precision === 0) {
 			return Number.prototype.toString.call(Math.floor(n));
 		}
 
@@ -296,23 +316,27 @@
 			return '0.' + shimlibTimes.timesString('0', precision);
 		}
 
-		var nBig = n * Math.pow(10, precision);
+		var sign = n < 0 ? '-' : '';
 
-		if (n < 0) {
-			nBig = Math.ceil(nBig);
-		} else {
-			nBig = Math.floor(nBig);
-		}
+		// Multiply n by 10^precision.
+		// (Move n to the left of the decimal by precision places).
+		// Truncate into an integer, and turn that into a string.
+		// Insert a new decimal point precision places from the right of the string.
+		// If n is negative, prepend '-'.
+		var nBig = Math.abs(n) * Math.pow(10, precision);
+		nBig = Math.floor(nBig);
 
 		var nBigString = Number.prototype.toString.call(nBig);
-		var stringStart = nBigString.substring(0, nBigString.length - precision);
-		var stringEnd = nBigString.substring(nBigString.length - precision);
+		var sBeforeDecimal = nBigString.substring(0, nBigString.length - precision);
+		var sAfterDecimal = nBigString.substring(nBigString.length - precision);
 
-		if (stringStart === '-' || stringStart === '') {
-			stringStart += '0';
+		// Add a leading 0 before decimal values with a
+		// magnitude less than 1
+		if (sBeforeDecimal === '') {
+			sBeforeDecimal = '0';
 		}
 
-		return stringStart + '.' + stringEnd;
+		return sign + sBeforeDecimal + '.' + sAfterDecimal;
 	}
 
 	var shimlibNumber = {
@@ -844,6 +868,133 @@ describe('shimlib array', function() {
 		});
 	});
 
+	describe('some', function() {
+		it('works', function() {
+			var arr1 = [ 1, 2, 3 ];
+			var arr2 = [ 5, 7, 9 ];
+
+			var isEven = function(n) {
+				return n % 2 === 0;
+			};
+
+			expect(shimlibArray.some(isEven, arr1)).to.equal(true);
+			expect(shimlibArray.some(isEven, arr2)).to.equal(false);
+		});
+
+		it('skips undefined elements', function() {
+			var arr1 = [ 1, undefined, 2 ];
+			var arr2 = [ undefined, undefined, undefined ];
+
+			var fn = function(n) {
+				return n === undefined;
+			};
+
+			expect(shimlibArray.some(fn, arr1)).to.equal(false);
+			expect(shimlibArray.some(fn, arr2)).to.equal(false);
+		});
+
+		it('iterates on non-array objects', function() {
+			var obj1 = {
+				num: 2,
+				test: 4,
+				'0': 1,
+				'1': 3,
+				'2': 5
+			};
+
+			var obj2 = {
+				'0': 2,
+				'1': 7
+			};
+
+			var isEven = function(n) {
+				return n % 2 === 0;
+			};
+
+			expect(shimlibArray.some(isEven, obj1)).to.equal(false);
+			expect(shimlibArray.some(isEven, obj2)).to.equal(false);
+
+			obj1.length = 3;
+			obj2.length = 2;
+
+			expect(shimlibArray.some(isEven, obj1)).to.equal(false);
+			expect(shimlibArray.some(isEven, obj2)).to.equal(true);
+		});
+
+		it('works with thisArg', function() {
+			var arr = [
+				{
+					shoes: 'Timbos',
+					jeans: 'Pelle Pelle'
+				},
+				{
+					shoes: 'Ones',
+					jeans: 'JNCO'
+				}
+			];
+
+			var fn = function(o) {
+				return this.jeans === o.jeans;
+			};
+
+			var obj = {
+				shoes: 'Yeezy',
+				jeans: 'Pelle Pelle'
+			};
+
+			expect(shimlibArray.some(fn, arr, obj)).to.equal(true);
+		});
+
+		it('passes arguments to callback', function(){
+			var funcResults = [];
+			var func = function(item, index, arr) {
+				funcResults.push({
+					item: item,
+					index: index,
+					arr: arr
+				});
+
+				return item === 'Raekwon';
+			};
+
+			var arr = [ 'Ghostface', 'Method Man', 'Raekwon' ];
+
+			expect(shimlibArray.some(func, arr)).to.equal(true);
+
+			expect(funcResults).to.deep.equal([
+				{
+					item: 'Ghostface',
+					index: 0,
+					arr: [ 'Ghostface', 'Method Man', 'Raekwon' ]
+				},
+
+				{
+					item: 'Method Man',
+					index: 1,
+					arr: [ 'Ghostface', 'Method Man', 'Raekwon' ]
+				},
+
+				{
+					item: 'Raekwon',
+					index: 2,
+					arr: [ 'Ghostface', 'Method Man', 'Raekwon' ]
+				}
+			]);
+		});
+
+		it('handles non-boolean returns', function() {
+			var arr = [ 0, 0, 0, 1 ];
+			var arr2 = [ '', null, 0 ];
+
+			var fn = function(val) {
+				return val;
+			};
+
+			expect(shimlibArray.some(fn, arr)).to.equal(true);
+			expect(shimlibArray.some(fn, arr2)).to.equal(false);
+		});
+	});
+
 	it('invoke', function() {
 		var func = function(n) {
 			return this.number + n;
@@ -1305,6 +1456,9 @@ describe('shimlib number', function() {
 	shimlibNumber = require('../../app/shimlib-number');
 	
 	it('to fixed', function(){
+		expect(shimlibNumber.toFixed(NaN, 0)).to.equal('NaN');
+		expect(shimlibNumber.toFixed(NaN, 4)).to.equal('NaN');
+
 		expect(shimlibNumber.toFixed(75, 0)).to.equal('75');
 		expect(shimlibNumber.toFixed(75, 1)).to.equal('75.0');
 		expect(shimlibNumber.toFixed(75, 2)).to.equal('75.00');
