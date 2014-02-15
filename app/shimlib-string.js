@@ -16,8 +16,24 @@
 		return returnString;
 	}
 
+	function shimlibInsert(s, insertS, index) {
+		if (!shimlibIs.isString(s)) {
+			throw new TypeError('s must be a string');
+		}
+
+		if (index < 0 || index > s.length) {
+			throw new RangeError('index is out of bounds');
+		}
+
+		var start = s.substring(0, index);
+		var end = s.substring(index, s.length);
+
+		return start + insertS + end;
+	}
+
 	var shimlibString = {
 		strip: shimlibStrip,
+		insert: shimlibInsert,
 		trim: shimlibStrip
 	};
 

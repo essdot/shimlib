@@ -60,7 +60,7 @@
 			if (arr[i] === _undefined) { continue; }
 
 			var currentResult = fn.call(thisObj, arr[i], i, arr);
-			
+
 			if (!!currentResult === true) {
 				return true;
 			}
@@ -575,8 +575,24 @@
 		return returnString;
 	}
 
+	function shimlibInsert(s, insertS, index) {
+		if (!shimlibIs.isString(s)) {
+			throw new TypeError('s must be a string');
+		}
+
+		if (index < 0 || index > s.length) {
+			throw new RangeError('index is out of bounds');
+		}
+
+		var start = s.substring(0, index);
+		var end = s.substring(index, s.length);
+
+		return start + insertS + end;
+	}
+
 	var shimlibString = {
 		strip: shimlibStrip,
+		insert: shimlibInsert,
 		trim: shimlibStrip
 	};
 
@@ -1733,6 +1749,23 @@ describe('shimlib string', function() {
 		expect(shimlibString.strip(undefined)).to.equal(undefined);
 		expect(shimlibString.strip(null)).to.equal(undefined);
 		expect(shimlibString.strip({})).to.equal(undefined);
+	});
+
+	it('insert', function() {
+		expect(shimlibString.insert('hello', 'x', 3)).to.equal('helxlo');
+		expect(shimlibString.insert('hello', 'x', 0)).to.equal('xhello');
+		expect(shimlibString.insert('hello', 'x', 5)).to.equal('hellox');
+
+		var indexOutOfRange = function() {
+			shimlibString.insert('hello', 'x', 6);
+		};
+
+		var indexOutOfRange2 = function() {
+			shimlibString.insert('hello', 'x', -1);
+		};
+
+		expect(indexOutOfRange).to.throw(RangeError);
+		expect(indexOutOfRange2).to.throw(RangeError);
 	});
 });
 describe('shimlib times', function() {

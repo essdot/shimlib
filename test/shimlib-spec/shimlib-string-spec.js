@@ -15,4 +15,21 @@ describe('shimlib string', function() {
 		expect(shimlibString.strip(null)).to.equal(undefined);
 		expect(shimlibString.strip({})).to.equal(undefined);
 	});
+
+	it('insert', function() {
+		expect(shimlibString.insert('hello', 'x', 3)).to.equal('helxlo');
+		expect(shimlibString.insert('hello', 'x', 0)).to.equal('xhello');
+		expect(shimlibString.insert('hello', 'x', 5)).to.equal('hellox');
+
+		var indexOutOfRange = function() {
+			shimlibString.insert('hello', 'x', 6);
+		};
+
+		var indexOutOfRange2 = function() {
+			shimlibString.insert('hello', 'x', -1);
+		};
+
+		expect(indexOutOfRange).to.throw(RangeError);
+		expect(indexOutOfRange2).to.throw(RangeError);
+	});
 });
