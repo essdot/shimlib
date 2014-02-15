@@ -1,7 +1,7 @@
 describe('shimlib is', function() {
 	shimlibIs = require('../../app/shimlib-is');
 
-	it('is array', function(){
+	it('detects arrays', function(){
 		var isa = shimlibIs.isArray;
 
 		expect(isa([1, 2, 3])).to.equal(true);
@@ -15,7 +15,7 @@ describe('shimlib is', function() {
 		expect(isa(function(){})).to.equal(false);
 	});
 
-	it('is function', function() {
+	it('detects functions', function() {
 		var isf = shimlibIs.isFunction;
 
 		expect(isf(Array)).to.equal(true);
@@ -31,7 +31,7 @@ describe('shimlib is', function() {
 		expect(isf('s')).to.equal(false);
 	});
 
-	it('is string', function(){
+	it('detects strings', function(){
 		var iss = shimlibIs.isString;
 
 		expect(iss('s')).to.equal(true);
@@ -43,5 +43,22 @@ describe('shimlib is', function() {
 		expect(iss({})).to.equal(false);
 		expect(iss(undefined)).to.equal(false);
 		expect(iss(null)).to.equal(false);
+	});
+
+	it('detects numbers', function(){
+		var isn = shimlibIs.isNumber;
+
+		expect(isn(-1)).to.equal(true);
+		expect(isn(0)).to.equal(true);
+		expect(isn(1)).to.equal(true);
+		expect(isn(100000)).to.equal(true);
+		
+		expect(isn('1')).to.equal(false);
+		expect(isn('0xabc')).to.equal(false);
+		expect(isn(NaN)).to.equal(false);
+		expect(isn(undefined)).to.equal(false);
+		expect(isn(null)).to.equal(false);
+		expect(isn([])).to.equal(false);
+		expect(isn([ 1 ])).to.equal(false);
 	});
 });

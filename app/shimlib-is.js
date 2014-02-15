@@ -16,6 +16,7 @@
     }
 
     function shimlibIsNumber(o) {
+		if (isNaN(o)) { return false; }
 		return Object.prototype.toString.call(o) === "[object Number]";
     }
 

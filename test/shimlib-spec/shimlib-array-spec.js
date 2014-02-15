@@ -3,7 +3,7 @@ describe('shimlib array', function() {
 
 	describe('filter', function() {
 
-		it('works', function(){
+		it('filters correctly', function(){
 			var evenFunc = function(n) {
 				return n % 2 === 0;
 			};
@@ -59,7 +59,7 @@ describe('shimlib array', function() {
 			]);
 		});
 
-		it('with thisArg', function() {
+		it('binds thisArg in callback function', function() {
 			var obj = {
 				str: 'my ',
 				arr: []
@@ -77,7 +77,7 @@ describe('shimlib array', function() {
 			expect(obj.arr).to.deep.equal([ 'my whip', 'my lambo', 'my hoopty' ]);
 		});
 
-		it('iterate on object', function() {
+		it('iterates on non-array object', function() {
 			var iterateObject = {
 				prop1: 'abc',
 				prop2: 'def',
@@ -104,7 +104,7 @@ describe('shimlib array', function() {
 			expect(s).to.equal('first value, second value, third value, ');
 		});
 
-		it('with undefined elements', function () {
+		it('skips undefined elements', function () {
 			var arr1 = [ undefined, undefined, 7, 8, undefined];
 			var arr2 = [ 11, undefined, 12 ];
 			var arr3 = [ undefined, undefined ];
@@ -119,7 +119,7 @@ describe('shimlib array', function() {
 	
 	describe('forEach', function(){
 
-		it('works', function(){
+		it('calls function for each element', function(){
 			var arr = [1, 2, 3, 4];
 
 			var s = "";
@@ -166,7 +166,7 @@ describe('shimlib array', function() {
 			]);
 		});
 
-		it('with thisArg', function(){
+		it('binds thisArg in callback function', function(){
 			var obj = {
 				str: 'get that ',
 				arr: []
@@ -183,7 +183,7 @@ describe('shimlib array', function() {
 			expect(obj.arr).to.deep.equal([ 'get that fetty', 'get that cheddar', 'get that guap' ]);
 		});
 
-		it('iterate on object', function() {
+		it('iterates on non-array object', function() {
 			var iterateObject = {
 				prop1: 'abc',
 				prop2: 'def',
@@ -208,7 +208,7 @@ describe('shimlib array', function() {
 			expect(s).to.equal('first value, second value, third value, ');
 		});
 
-		it('with undefined elements', function() {
+		it('skips undefined elements', function() {
 			var arr1 = [ undefined, 1, 2, undefined ];
 			var arr2 = [ 3, 4, undefined, 5 ];
 			var arr3 = [ undefined ];
@@ -233,7 +233,7 @@ describe('shimlib array', function() {
 	});
 
 	describe('some', function() {
-		it('works', function() {
+		it('evaluates correctly', function() {
 			var arr1 = [ 1, 2, 3 ];
 			var arr2 = [ 5, 7, 9 ];
 
@@ -285,7 +285,7 @@ describe('shimlib array', function() {
 			expect(shimlibArray.some(isEven, obj2)).to.equal(true);
 		});
 
-		it('works with thisArg', function() {
+		it('binds thisArg to callback function', function() {
 			var arr = [
 				{
 					shoes: 'Timbos',
@@ -359,23 +359,9 @@ describe('shimlib array', function() {
 		});
 	});
 
-	it('invoke', function() {
-		var func = function(n) {
-			return this.number + n;
-		};
-
-		var obj1  = { addFunc: func, number: 5 };
-		var obj2  = { addFunc: func, number: 13 };
-		var obj3  = { addFunc: func, number: 82 };
-		var arr  = [ obj1, obj2, obj3 ];
-
-		var invokeResult = shimlibArray.invoke(arr, 'addFunc', 17);
-		expect(invokeResult).to.deep.equal([ 22, 30, 99 ]);
-	});
-
 	describe('map', function() {
 
-		it('works', function(){
+		it('maps correctly', function(){
 			var doubleFunc = function(n) {
 				return n * 2;
 			};
@@ -389,7 +375,7 @@ describe('shimlib array', function() {
 			expect(shimlibArray.map(toString, [6, 7, 8])).to.deep.equal(['6', '7', '8']);
 		});
 
-		it('with thisArg', function(){
+		it('binds thisArg to callback function', function(){
 			var func = function(n) {
 				return this.str + n.toString();
 			};
@@ -403,7 +389,7 @@ describe('shimlib array', function() {
 			expect(shimlibArray.map(func, arr, obj)).to.deep.equal(['abc1', 'abc2', 'abc3' ]);
 		});
 
-		it('passes arguments to function', function(){
+		it('passes arguments to callback', function(){
 			var func = function(item, index, arr) {
 				return {
 					item: item,
@@ -435,7 +421,7 @@ describe('shimlib array', function() {
 			]);
 		});
 
-		it('iterate on object', function() {
+		it('iterates on non-array object', function() {
 			var iterateObject = {
 				prop1: 'abc',
 				prop2: 'def',
@@ -469,35 +455,57 @@ describe('shimlib array', function() {
 		});
 	});
 
-	it('pick random', function(){
-		var list = [1, 2, 3, 4, 5, 6, 7, 8];
-		var randomPick = shimlibArray.pickRandom(list);
-		var index = list.indexOf(randomPick);
+	describe('invoke', function() {
+		it('invokes method on all elements', function() {
+			var func = function(n) {
+				return this.number + n;
+			};
 
-		expect(index).to.be.within(0, list.length - 1);
-		expect(list[index]).to.equal(randomPick);
+			var obj1  = { addFunc: func, number: 5 };
+			var obj2  = { addFunc: func, number: 13 };
+			var obj3  = { addFunc: func, number: 82 };
+			var arr  = [ obj1, obj2, obj3 ];
+
+			var invokeResult = shimlibArray.invoke(arr, 'addFunc', 17);
+			expect(invokeResult).to.deep.equal([ 22, 30, 99 ]);
+		});
 	});
 
-	it('pluck', function() {
-		var arr = [
-			{ name: 'John', age: 34 },
-			{ name: 'Jack', age: 31 },
-			{ name: 'Jane', age: 20 },
-			{ name: 'Jan', age: 22 }
-		];
+	describe('pickRandom', function() {
+		it('chooses random element', function(){
+			var list = [1, 2, 3, 4, 5, 6, 7, 8];
+			var randomPick = shimlibArray.pickRandom(list);
+			var index = list.indexOf(randomPick);
 
-		var arr2 = [
-			{ name: 'Jern', age: 44 },
-			{ name: 'Jold', age: 54 },
-			undefined,
-			{ name: 'Jilm', age: 29 }
-		];
+			expect(index).to.be.within(0, list.length - 1);
+			expect(list[index]).to.equal(randomPick);
+		});
+	});
 
-		expect(shimlibArray.pluck(arr, 'name')).to.deep.equal([ 'John', 'Jack', 'Jane', 'Jan' ]);
-		expect(shimlibArray.pluck(arr, 'age')).to.deep.equal([ 34, 31, 20, 22 ]);
+	describe('pluck', function() {
+		it('projects over array correctly', function() {
+			var arr = [
+				{ name: 'John', age: 34 },
+				{ name: 'Jack', age: 31 },
+				{ name: 'Jane', age: 20 },
+				{ name: 'Jan', age: 22 }
+			];
 
-		expect(shimlibArray.pluck(arr2, 'name')).to.deep.equal([ 'Jern', 'Jold', 'Jilm' ]);
-		expect(shimlibArray.pluck(arr2, 'age')).to.deep.equal([ 44, 54, 29 ]);
-		expect(shimlibArray.pluck(arr2, 'yitta')).to.deep.equal([]);
+			expect(shimlibArray.pluck(arr, 'name')).to.deep.equal([ 'John', 'Jack', 'Jane', 'Jan' ]);
+			expect(shimlibArray.pluck(arr, 'age')).to.deep.equal([ 34, 31, 20, 22 ]);
+		});
+
+		it('skips undefined elements', function() {
+			var arr2 = [
+				{ name: 'Jern', age: 44 },
+				{ name: 'Jold', age: 54 },
+				undefined,
+				{ name: 'Jilm', age: 29 }
+			];
+
+			expect(shimlibArray.pluck(arr2, 'name')).to.deep.equal([ 'Jern', 'Jold', 'Jilm' ]);
+			expect(shimlibArray.pluck(arr2, 'age')).to.deep.equal([ 44, 54, 29 ]);
+			expect(shimlibArray.pluck(arr2, 'yitta')).to.deep.equal([]);
+		});
 	});
 });
