@@ -6,13 +6,15 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 
 ## Functionality
 
+(Note - there are links to the ECMAScript spec below. It's a huge document and takes a long time to load before it can jump to the specific section linked to.)
+
 #### Array
 
-* **shimlib.map(fn, arr, [thisArg])**: Standard map function. Using values returned from *fn*, transform *arr* into a new array. *fn* is a function that takes an element of *arr* and returns some value. *thisArg* is an optional parameter that will be bound to `this` when *fn* is called. Otherwise, `this` will be bound to *arr*. Can be used as a shim for Array.prototype.map.
+* **shimlib.map(fn, arr, [thisArg])**: Standard map function. Using values returned from *fn*, transform *arr* into a new array. *fn* is a function that takes an element of *arr* and returns some value. *thisArg* is an optional parameter that will be bound to `this` when *fn* is called. Otherwise, `this` will be bound to *arr*. Can be used as a shim for [Array.prototype.map](http://www.ecma-international.org/ecma-262/5.1/#sec-15.4.4.19).
 
-* **shimlib.filter(fn, arr, [thisArg])**: Standard filter function. Filter *arr* by passing each element to *fn*. Each element of *arr* will be included in the result if and only if *fn* returns `true`. *thisArg* is an optional parameter that will be bound to `this` when *fn* is called. Otherwise, `this` will be bound to *arr*. Can be used as a shim for Array.prototype.filter.
+* **shimlib.filter(fn, arr, [thisArg])**: Standard filter function. Filter *arr* by passing each element to *fn*. Each element of *arr* will be included in the result if and only if *fn* returns `true`. *thisArg* is an optional parameter that will be bound to `this` when *fn* is called. Otherwise, `this` will be bound to *arr*. Can be used as a shim for [Array.prototype.filter](http://www.ecma-international.org/ecma-262/5.1/#sec-15.4.4.20).
 
-* **shimlib.forEach(fn, arr, [thisArg])**: Standard forEach function. *fn* will be called for each element of *arr*. *thisArg* is an optional parameter that will be bound to `this` when *fn* is called. Otherwise, `this` will be bound to *arr*. Can be used as a shim for Array.prototype.forEach.
+* **shimlib.forEach(fn, arr, [thisArg])**: Standard forEach function. *fn* will be called for each element of *arr*. *thisArg* is an optional parameter that will be bound to `this` when *fn* is called. Otherwise, `this` will be bound to *arr*. Can be used as a shim for [Array.prototype.forEach](http://www.ecma-international.org/ecma-262/5.1/#sec-15.4.4.18).
 
 * **shimlib.invoke(arr, methodName)**: Invoke *methodName* as a method of each element of *arr* and return an array of the results of each invocation. *methodName* should be a string. Any extra arguments will be passed on to the method.
 
@@ -36,11 +38,11 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 #### Number
 
 * **shimlib.toFixed(n, precision)**: Returns a string representing *n* with *precision* digits after the decimal point.  
-**Note: Currently, toFixed() truncates the number and does not round it. This does not match the spec.**
+**Note: Currently, toFixed() truncates the number and does not round it. This does not match [the spec](http://www.ecma-international.org/ecma-262/5.1/#sec-15.7.4.5).**
 
 #### Object
 
-* **shimlib.create(o)**: Create a new object inheriting from *o*. The new object's prototype will be *o*. Can be used as a shim for Object.create.
+* **shimlib.create(o)**: Create a new object inheriting from *o*. The new object's prototype will be *o*. Can be used as a shim for [Object.create](http://www.ecma-international.org/ecma-262/5.1/#sec-15.2.3.5).
 
 * **shimlib.extend(destination, sources)**: Replace all values in *destination* with those in one or more *sources*.
 
