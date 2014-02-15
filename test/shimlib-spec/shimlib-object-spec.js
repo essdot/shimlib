@@ -69,7 +69,10 @@ describe('shimlib object', function() {
 		var obj3 = shimlibObject.create(obj);
 		var arrayObj = shimlibObject.create([1, 2, 3]);
 
-		expect(shimlibObject.create(undefined)).to.deep.equal({});
+		expect(function() {
+			shimlibObject.create(undefined);
+		}).to.throw(TypeError);
+		
 		expect(shimlibObject.create(null)).to.deep.equal({});
 		expect(shimlibObject.create({})).to.deep.equal({});
 		

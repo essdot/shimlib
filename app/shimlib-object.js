@@ -6,14 +6,13 @@
 
 	var dangerousKeys = [
 		'constructor', 'toString', 'prototype', 'indexOf', 'length', 'hasOwnProperty',
-		'toLocaleString', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable'
+		'toLocaleString', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'apply',
+		'call'
 	];
 
 	function shimlibCreate(o) {
-		if (o === _undefined ||
-			o === null ||
-			typeof o !== 'object') {
-			return {};
+		if (typeof o !== 'object' && o !== null) {
+			throw new TypeError('o must be an object, or null');
 		}
 
 		function Ctor(){}
