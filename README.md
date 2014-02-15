@@ -28,12 +28,10 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 
 #### Is
 
-Type identity functions.
-
-* **shimlib.isArray**
-* **shimlib.isString**
-* **shimlib.isFunction**
-* **shimlib.isNumber**
+* **shimlib.isArray(o)**: Returns `true` if o is an array, `false` otherwise. Can be used as a shim for Array.isArray.
+* **shimlib.isString**: Returns `true` if o is a string, `false` otherwise.
+* **shimlib.isFunction**: Returns `true` if o is an array, `false` otherwise.
+* **shimlib.isNumber**: Returns `true` if o is an array, `false` otherwise.
 
 #### Number
 
