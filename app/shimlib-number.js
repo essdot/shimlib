@@ -9,11 +9,11 @@
 			return "NaN";
 		}
 
-		if (!shimlibIs.isNumber(precision)) {
-			precision = 0;
+		if (!shimlibIs.isNumber(n)) {
+			throw new TypeError('n must be a number or NaN');
 		}
 
-		if (precision === 0) {
+		if (!shimlibIs.isNumber(precision) || precision === 0) {
 			return Number.prototype.toString.call(Math.floor(n));
 		}
 
@@ -21,23 +21,27 @@
 			return '0.' + shimlibTimes.timesString('0', precision);
 		}
 
-		var nBig = n * Math.pow(10, precision);
+		var sign = n < 0 ? '-' : '';
 
-		if (n < 0) {
-			nBig = Math.ceil(nBig);
-		} else {
-			nBig = Math.floor(nBig);
-		}
+		// Multiply n by 10^precision.
+		// (Move n to the left of the decimal by precision places).
+		// Truncate into an integer, and turn that into a string.
+		// Insert a new decimal point precision places from the right of the string.
+		// If n is negative, prepend '-'.
+		var nBig = Math.abs(n) * Math.pow(10, precision);
+		nBig = Math.floor(nBig);
 
 		var nBigString = Number.prototype.toString.call(nBig);
-		var stringStart = nBigString.substring(0, nBigString.length - precision);
-		var stringEnd = nBigString.substring(nBigString.length - precision);
+		var sBeforeDecimal = nBigString.substring(0, nBigString.length - precision);
+		var sAfterDecimal = nBigString.substring(nBigString.length - precision);
 
-		if (stringStart === '-' || stringStart === '') {
-			stringStart += '0';
+		// Add a leading 0 before decimal values with a
+		// magnitude less than 1
+		if (sBeforeDecimal === '') {
+			sBeforeDecimal = '0';
 		}
 
-		return stringStart + '.' + stringEnd;
+		return sign + sBeforeDecimal + '.' + sAfterDecimal;
 	}
 
 	var shimlibNumber = {

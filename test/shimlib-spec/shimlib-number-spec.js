@@ -2,6 +2,9 @@ describe('shimlib number', function() {
 	shimlibNumber = require('../../app/shimlib-number');
 	
 	it('to fixed', function(){
+		expect(shimlibNumber.toFixed(NaN, 0)).to.equal('NaN');
+		expect(shimlibNumber.toFixed(NaN, 4)).to.equal('NaN');
+
 		expect(shimlibNumber.toFixed(75, 0)).to.equal('75');
 		expect(shimlibNumber.toFixed(75, 1)).to.equal('75.0');
 		expect(shimlibNumber.toFixed(75, 2)).to.equal('75.00');
