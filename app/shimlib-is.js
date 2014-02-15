@@ -10,6 +10,8 @@
 	}
 
 	function shimlibIsArray(o) {
+		if (typeof o !== 'object') { return false;}
+
         return Object.prototype.toString.call(o) === "[object Array]";
     }
 

@@ -150,6 +150,8 @@
 	}
 
 	function shimlibIsArray(o) {
+		if (typeof o !== 'object') { return false;}
+
         return Object.prototype.toString.call(o) === "[object Array]";
     }
 
@@ -1398,7 +1400,10 @@ describe('shimlib object', function() {
 		var obj3 = shimlibObject.create(obj);
 		var arrayObj = shimlibObject.create([1, 2, 3]);
 
-		expect(function() { shimlibObject.create(undefined); }).to.throw(TypeError);
+		expect(function() {
+			shimlibObject.create(undefined);
+		}).to.throw(TypeError);
+		
 		expect(shimlibObject.create(null)).to.deep.equal({});
 		expect(shimlibObject.create({})).to.deep.equal({});
 		
