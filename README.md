@@ -42,7 +42,7 @@ Type identity functions.
 
 #### Object
 
-* **shimlib.create(o)**: Create a new object inheriting from *o*. The prototype of the new object's constructor will be *o*. Follows [the spec for Object.create](http://www.ecma-international.org/ecma-262/5.1/#sec-15.2.3.5).
+* **shimlib.create(o)**: Create a new object inheriting from *o*. The new object's prototype will be *o*. Can be used as a shim for Object.create.
 
 * **shimlib.extend(destination, sources)**: Replace all values in *destination* with those in one or more *sources*.
 
