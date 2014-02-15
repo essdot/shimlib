@@ -5,9 +5,12 @@
 	var shimlibTimes = require('./shimlib-times');
 
 	function shimlibToFixed(n, precision) {
-		if (!shimlibIs.isNumber(n)) { return; }
+		if (isNaN(n)) {
+			return "NaN";
+		}
+
 		if (!shimlibIs.isNumber(precision)) {
-			precision = 2;
+			precision = 0;
 		}
 
 		if (precision === 0) {

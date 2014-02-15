@@ -2,6 +2,10 @@
 	"use strict";
 	
 	function shimlibBind(fn, context) {
+		if (typeof fn !== 'function') {
+			throw new TypeError('fn must be a function');
+		}
+
 		var extraArgs = [].slice.call(arguments, 2);
 
 		return function() {

@@ -106,6 +106,10 @@
 	"use strict";
 	
 	function shimlibBind(fn, context) {
+		if (typeof fn !== 'function') {
+			throw new TypeError('fn must be a function');
+		}
+
 		var extraArgs = [].slice.call(arguments, 2);
 
 		return function() {
@@ -276,9 +280,12 @@
 	var shimlibTimes = require('./shimlib-times');
 
 	function shimlibToFixed(n, precision) {
-		if (!shimlibIs.isNumber(n)) { return; }
+		if (isNaN(n)) {
+			return "NaN";
+		}
+
 		if (!shimlibIs.isNumber(precision)) {
-			precision = 2;
+			precision = 0;
 		}
 
 		if (precision === 0) {
