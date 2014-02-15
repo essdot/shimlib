@@ -52,9 +52,11 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 
 #### Query Strings
 
+Shimlib's query string functionality handles arrays and numbers. Empty query string values are deserialized as empty strings (`''`).
+
 * **shimlib.toQueryString(o)**: Serialize *o* as a query string.
 
-* **shimlib.fromQueryString(qs)**: Deserialize *qs* into a Javascript object. Numeric values are deserialized as numbers. Multiple values with the same key will be deserialized as an array. Keys without values will be deserialized as empty strings.
+* **shimlib.fromQueryString(qs)**: Deserialize *qs* into a Javascript object. *qs* can be just a query string, or a URI with a query string (*fromQueryString* will disregard the rest of the URI).
 
 ```javascript
 var qs = 'section=45&id=abc&arr=1&arr=2&arr=3&empty';
