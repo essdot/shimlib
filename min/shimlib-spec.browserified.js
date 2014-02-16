@@ -1792,7 +1792,7 @@ describe('shimlib times', function() {
 describe('Object integration', function(){
 	var shimlibObject = require('../../app/shimlib-object');
 
-	it('keys', function() {
+	it('keys matches Object.keys', function() {
 		var arr = [1, 2, 3];
 
 		expect(Object.keys(arr)).to.deep.equal(shimlibObject.keys(arr));
@@ -1803,7 +1803,7 @@ describe('Array integration', function(){
 	var shimlibArray = require('../../app/shimlib-array');
 	var shimlibIs = require('../../app/shimlib-is');
 
-	it('map functions have same behavior', function(){
+	it('shimlibMap matches Array.prototype.map', function(){
 		var arr1 = [ 2, 5, 9 ];
 		var arr2 = [ 7, undefined, 9 ];
 
@@ -1820,7 +1820,7 @@ describe('Array integration', function(){
 		expect(arr2.map(func)).to.deep.equal(shimlibArray.map(func, arr2));
 	});
 
-	it('foreach', function() {
+	it('shimlibForeach matches Array.prototype.forEach', function() {
 		var s1 = "";
 		var s2 = "";
 
@@ -1840,7 +1840,7 @@ describe('Array integration', function(){
 		expect(s2).to.equal('246');
 	});
 
-	it('is array', function(){
+	it('shimlibIsArray matches Array.isArray', function(){
 		var arr = [1, 2, 3];
 
 		var both = function(arg) {
@@ -1857,7 +1857,7 @@ describe('Array integration', function(){
 		both(new Array());
 	});
 
-	it('filter', function(){
+	it('shimlibFilter matches Array.prototype.filter', function(){
 		var arr = [1, 2, 3, 4, 5, 6, 7];
 
 		var evenFunc = function(n) {
@@ -1874,7 +1874,7 @@ describe('Array integration', function(){
 describe('Function integration', function(){
 	var shimlibFunction = require('../../app/shimlib-function');
 
-	it('bind', function(){
+	it('bind matches Function.prototype.bind', function(){
 		var obj = {
 			lembar: 17
 		};
@@ -1889,7 +1889,7 @@ describe('Function integration', function(){
 		expect(bound1()).to.equal(bound2());
 	});
 
-	it('bind partial apply', function(){
+	it('bind partial apply matches Function.prototype.bind', function(){
 		var obj = {
 			talv: 12
 		};
@@ -1915,7 +1915,7 @@ describe('Function integration', function(){
 describe('String integration', function(){
 	var shimlibString = require('../../app/shimlib-string');
 
-	it('trim', function() {
+	it('shimlibTrim matches String.prototype.trim', function() {
 		var both = function(arg) {
 			expect(arg.trim()).to.equal(shimlibString.trim(arg));
 		};
@@ -1937,7 +1937,7 @@ describe('String integration', function(){
 });
 
 describe('Number integration', function(){
-	it('to fixed without proper rounding', function(){
+	it('to fixed matches Number.prototype.toFixed, without proper rounding', function(){
 		var both = function(num, precision) {
 			expect(num.toFixed(precision)).to.equal(shimlibNumber.toFixed(num, precision));
 		};
@@ -1951,7 +1951,7 @@ describe('Number integration', function(){
 		both(-0, 2);
 	});
 
-	xit('to fixed proper rounding', function() {
+	xit('to fixed matches Number.prototype.toFixed, with proper rounding', function() {
 		var both = function(num, precision) {
 			expect(num.toFixed(precision)).to.equal(shimlibNumber.toFixed(num, precision));
 		};
@@ -1996,7 +1996,8 @@ describe("Don't break when builtins altered", function() {
 		expect(shimlibString.strip(s)).to.equal('1234');
 	});
 
-	it('expect alter', function() {
+	it('chai expectations can be copied to uppercase versions', function() {
+		// Chai offers BDD assertions such as `expect(val).to.be.true` .
 		// Having properties with names like 'undefined', 'true', and 'false'
 		// is readable but uncomfortably close to bad syntax. Copy these properties to
 		// uppercase versions to help distinguish them from keywords.
