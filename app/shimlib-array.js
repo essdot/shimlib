@@ -5,7 +5,7 @@
 
 	var shimlibIs = require('./shimlib-is');
 
-	function shimlibFilter(fn, arr, thisArg) {
+	function shimlibFilter(arr, fn, thisArg) {
 		if (!fn) { return; }
 		arr = arr || [];
 		var result = [];
@@ -22,7 +22,7 @@
 		return result;
 	}
 
-	function shimlibForEach(fn, arr, thisArg) {
+	function shimlibForEach(arr, fn, thisArg) {
 		if (!fn || !arr || typeof arr.length !== 'number') { return; }
 		var thisObj = thisArg || arr;
 		var len = arr.length;
@@ -33,7 +33,7 @@
 		}
 	}
 
-	function shimlibMap(fn, arr, thisArg) {
+	function shimlibMap(arr, fn, thisArg) {
 		if (!fn || !arr || typeof arr.length !== 'number') { return; }
 
 		var thisObj = thisArg || arr;
@@ -48,7 +48,7 @@
 		return result;
 	}
 
-	function shimlibSome(fn, arr, thisArg) {
+	function shimlibSome(arr, fn, thisArg) {
 		if (!fn || !arr) { return; }
 		var thisObj = thisArg || arr;
 		var len = arr.length;
@@ -65,7 +65,7 @@
 		return false;
 	}
 
-	function shimlibEvery(fn, arr, thisArg) {
+	function shimlibEvery(arr, fn, thisArg) {
 		if (!fn || !arr) { return; }
 		var thisObj = thisArg || arr;
 		var len = arr.length;
@@ -93,12 +93,12 @@
 			args = [args];
 		}
 
-		return shimlibMap(function(val){
+		return shimlibMap(arr, function(val){
 			var fn = val[methodName];
 			if(fn === _undefined) { return; }
 
 			return fn.apply(val, args);
-		}, arr);
+		});
 	}
 
 	function shimlibPickRandom(list) {

@@ -22,8 +22,8 @@ describe('Array integration', function(){
 		};
 
 		expect(arr1.map(func)).to.deep.equal([ 6, 15, 27 ]);
-		expect(shimlibArray.map(func, arr1)).to.deep.equal([ 6, 15, 27 ]);
-		expect(arr1.map(func)).to.deep.equal(shimlibArray.map(func, arr1));
+		expect(shimlibArray.map(arr1, func)).to.deep.equal([ 6, 15, 27 ]);
+		expect(arr1.map(func)).to.deep.equal(shimlibArray.map(arr1, func));
 
 		var testArr = new Array(8);
 		testArr[0] = 21;
@@ -33,13 +33,13 @@ describe('Array integration', function(){
 		var testArrKeys = [ '0', '1', '7' ];
 
 		expect(Object.keys(arr2.map(func))).to.deep.equal(testArrKeys);
-		expect(Object.keys(shimlibArray.map(func, arr2))).to.deep.equal(testArrKeys);
+		expect(Object.keys(shimlibArray.map(arr2, func))).to.deep.equal(testArrKeys);
 
 		expect(arr2.map(func)).to.have.ownProperty('0')
 									.and.ownProperty('1')
 									.and.ownProperty('7');
 
-		expect(shimlibArray.map(func, arr2)).to.have.ownProperty('0')
+		expect(shimlibArray.map(arr2, func)).to.have.ownProperty('0')
 												.and.ownProperty('1')
 												.and.ownProperty('7');
 
@@ -49,15 +49,15 @@ describe('Array integration', function(){
 									.and.ownProperty('5')
 									.and.ownProperty('6');
 									
-		expect(shimlibArray.map(func, arr2)).not.to.have.ownProperty('2')
+		expect(shimlibArray.map(arr2, func)).not.to.have.ownProperty('2')
 												.and.ownProperty('3')
 												.and.ownProperty('4')
 												.and.ownProperty('5')
 												.and.ownProperty('6');
 
 		expect(arr2.map(func)).to.deep.equal(testArr);
-		expect(shimlibArray.map(func, arr2)).to.deep.equal(testArr);
-		expect(arr2.map(func)).to.deep.equal(shimlibArray.map(func, arr2));
+		expect(shimlibArray.map(arr2, func)).to.deep.equal(testArr);
+		expect(arr2.map(func)).to.deep.equal(shimlibArray.map(arr2, func));
 
 		expect([1, 2, 3]).to.have.ownProperty('0').and.ownProperty('1').and.ownProperty('2');
 	});
@@ -77,7 +77,7 @@ describe('Array integration', function(){
 		var arr = [1, 2, 3];
 
 		arr.forEach(func1);
-		shimlibArray.forEach(func2, arr);
+		shimlibArray.forEach(arr, func2);
 		expect(s1).to.equal(s2);
 		expect(s2).to.equal('246');
 	});
@@ -106,9 +106,8 @@ describe('Array integration', function(){
 			return n % 2 === 0;
 		};
 
-		expect(arr.filter(evenFunc)).to.deep.equal(shimlibArray.filter(evenFunc, arr));
-		expect(arr.filter(evenFunc)).to.deep.equal(shimlibArray.filter(evenFunc, arr));
-		expect(shimlibArray.filter(evenFunc, arr)).to.deep.equal([2, 4, 6]);
+		expect(arr.filter(evenFunc)).to.deep.equal(shimlibArray.filter(arr, evenFunc));
+		expect(shimlibArray.filter(arr, evenFunc)).to.deep.equal([2, 4, 6]);
 	});
 
 	it('shimlibSome matches Array.prototype.some', function() {
@@ -118,10 +117,10 @@ describe('Array integration', function(){
 		var isEven = function(n) { return n % 2 === 0; };
 
 		expect(arr.some(isEven)).to.equal(true);
-		expect(shimlibArray.some(isEven, arr)).to.equal(true);
+		expect(shimlibArray.some(arr, isEven)).to.equal(true);
 
 		expect(arr2.some(isEven)).to.equal(false);
-		expect(shimlibArray.some(isEven, arr2)).to.equal(false);
+		expect(shimlibArray.some(arr2, isEven)).to.equal(false);
 	});
 
 	it('shimlibEvery matches Array.prototype.every', function() {
@@ -131,10 +130,10 @@ describe('Array integration', function(){
 		var isEven = function(n) { return n % 2 === 0; };
 
 		expect(arr.every(isEven)).to.equal(false);
-		expect(shimlibArray.every(isEven, arr)).to.equal(false);
+		expect(shimlibArray.every(arr, isEven)).to.equal(false);
 
 		expect(arr2.every(isEven)).to.equal(true);
-		expect(shimlibArray.every(isEven, arr2)).to.equal(true);
+		expect(shimlibArray.every(arr2, isEven)).to.equal(true);
 	});
 
 });
