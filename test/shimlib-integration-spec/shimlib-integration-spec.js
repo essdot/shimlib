@@ -14,7 +14,8 @@ describe('Array integration', function(){
 
 	it('shimlibMap matches Array.prototype.map', function(){
 		var arr1 = [ 2, 5, 9 ];
-		var arr2 = [ 7, undefined, 9 ];
+		var arr2 = [ 7, 9 ];
+		arr2[7] = 11;
 
 		var func = function(n) {
 			return n * 3;
@@ -24,8 +25,36 @@ describe('Array integration', function(){
 		expect(shimlibArray.map(func, arr1)).to.deep.equal([ 6, 15, 27 ]);
 		expect(arr1.map(func)).to.deep.equal(shimlibArray.map(func, arr1));
 
-		expect(arr2.map(func)).to.deep.equal([ 21, NaN, 27 ]);
-		expect(shimlibArray.map(func, arr2)).to.deep.equal([ 21, NaN, 27 ]);
+		var testArr = new Array(8);
+		testArr[0] = 21;
+		testArr[1] = 27;
+		testArr[7] = 33;
+
+		var testArrKeys = [ '0', '1', '7' ];
+
+		expect(Object.keys(arr2.map(func))).to.deep.equal(testArrKeys);
+		expect(Object.keys(shimlibArray.map(func, arr2))).to.deep.equal(testArrKeys);
+
+		expect(arr2.map(func)).to.have.property('0');
+		expect(arr2.map(func)).to.have.property('1');
+		expect(arr2.map(func)).to.have.property('7');
+		expect(shimlibArray.map(func, arr2)).to.have.property('0');
+		expect(shimlibArray.map(func, arr2)).to.have.property('1');
+		expect(shimlibArray.map(func, arr2)).to.have.property('7');
+
+		expect(arr2.map(func)).not.to.have.property('2');
+		expect(arr2.map(func)).not.to.have.property('3');
+		expect(arr2.map(func)).not.to.have.property('4');
+		expect(arr2.map(func)).not.to.have.property('5');
+		expect(arr2.map(func)).not.to.have.property('6');
+		expect(shimlibArray.map(func, arr2)).not.to.have.property('2');
+		expect(shimlibArray.map(func, arr2)).not.to.have.property('3');
+		expect(shimlibArray.map(func, arr2)).not.to.have.property('4');
+		expect(shimlibArray.map(func, arr2)).not.to.have.property('5');
+		expect(shimlibArray.map(func, arr2)).not.to.have.property('6');
+
+		expect(arr2.map(func)).to.deep.equal(testArr);
+		expect(shimlibArray.map(func, arr2)).to.deep.equal(testArr);
 		expect(arr2.map(func)).to.deep.equal(shimlibArray.map(func, arr2));
 	});
 

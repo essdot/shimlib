@@ -10,8 +10,10 @@
 		arr = arr || [];
 		var result = [];
 		var thisObj = thisArg || arr;
+		var len = arr.length;
 
-		for (var i = 0; i < arr.length; i++) {
+		for (var i = 0; i < len; i++) {
+			if (!Object.prototype.hasOwnProperty.call(arr, i)) { continue; }
 			if (fn.call(thisObj, arr[i], i, arr) === true) {
 				result.push(arr[i]);
 			}
@@ -21,23 +23,25 @@
 	}
 
 	function shimlibForEach(fn, arr, thisArg) {
-		if (!fn){ return; }
+		if (!fn || !arr || typeof arr.length !== 'number') { return; }
 		var thisObj = thisArg || arr;
+		var len = arr.length;
 
-		for (var i = 0; i < arr.length; i++) {
-			var current = arr[i];
-
-			fn.call(thisObj, current, i, arr);
+		for (var i = 0; i < len; i++) {
+			if (!Object.prototype.hasOwnProperty.call(arr, i)) { continue; }
+			fn.call(thisObj, arr[i], i, arr);
 		}
 	}
 
 	function shimlibMap(fn, arr, thisArg) {
-		if (!fn || !arr) { return; }
-		var result = [];
+		if (!fn || !arr || typeof arr.length !== 'number') { return; }
+
 		var thisObj = thisArg || arr;
+		var len = arr.length;
+		var result = new Array(len);
 
-
-		for (var i = 0; i < arr.length; i++) {
+		for (var i = 0; i < len; i++) {
+			if (!Object.prototype.hasOwnProperty.call(arr, i)) { continue; }
 			result[i] = fn.call(thisObj, arr[i], i, arr);
 		}
 
