@@ -356,6 +356,111 @@ describe('shimlib array', function() {
 		});
 	});
 
+	describe('every', function() {
+		it('evaluates correctly', function() {
+			var arr1 = [ 1, 2, 3 ];
+			var arr2 = [ 6, 8, 12 ];
+
+			var isEven = function(n) {
+				return n % 2 === 0;
+			};
+
+			expect(shimlibArray.every(isEven, arr1)).to.equal(false);
+			expect(shimlibArray.every(isEven, arr2)).to.equal(true);
+		});
+
+		it('iterates on non-array objects', function() {
+			var obj1 = {
+				num: 2,
+				test: 4,
+				'0': 1,
+				'1': 3,
+				'2': 5
+			};
+
+			var obj2 = {
+				'0': 2,
+				'1': 4
+			};
+
+			var isEven = function(n) {
+				return n % 2 === 0;
+			};
+
+			expect(shimlibArray.every(isEven, obj1)).to.equal(true);
+			expect(shimlibArray.every(isEven, obj2)).to.equal(true);
+
+			obj1.length = 3;
+			obj2.length = 2;
+
+			expect(shimlibArray.every(isEven, obj1)).to.equal(false);
+			expect(shimlibArray.every(isEven, obj2)).to.equal(true);
+		});
+
+		it('binds thisArg to callback function', function() {
+			var arr = [
+				{
+					shoes: 'Timbos',
+					jeans: 'Pelle Pelle'
+				}
+			];
+
+			var fn = function(o) {
+				return this.jeans === o.jeans;
+			};
+
+			var obj = {
+				shoes: 'Yeezy',
+				jeans: 'Pelle Pelle'
+			};
+
+			expect(shimlibArray.every(fn, arr, obj)).to.equal(true);
+		});
+
+		it('passes arguments to callback', function(){
+			var funcResults = [];
+			var func = function(item, index, arr) {
+				funcResults.push({
+					item: item,
+					index: index,
+					arr: arr
+				});
+
+				return item === 'Ghostface';
+			};
+
+			var arr = [ 'Ghostface', 'Method Man', 'Raekwon' ];
+
+			expect(shimlibArray.every(func, arr)).to.equal(false);
+
+			expect(funcResults).to.deep.equal([
+				{
+					item: 'Ghostface',
+					index: 0,
+					arr: [ 'Ghostface', 'Method Man', 'Raekwon' ]
+				},
+
+				{
+					item: 'Method Man',
+					index: 1,
+					arr: [ 'Ghostface', 'Method Man', 'Raekwon' ]
+				}
+			]);
+		});
+
+		it('handles non-boolean returns', function() {
+			var arr = [ 1, {}, Infinity, [] ];
+			var arr2 = [ '', null, 0 ];
+
+			var fn = function(val) {
+				return val;
+			};
+
+			expect(shimlibArray.every(fn, arr)).to.equal(true);
+			expect(shimlibArray.every(fn, arr2)).to.equal(false);
+		});
+	});
+
 	describe('map', function() {
 
 		it('maps correctly', function(){

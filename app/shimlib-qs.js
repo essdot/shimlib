@@ -58,7 +58,7 @@
 			
 			var valAsNumber = val - 0;
 
-			if (!isNaN(valAsNumber) && val !== '') {
+			if (!shimlibIs.isNan(valAsNumber) && val !== '') {
 				val = valAsNumber;
 			}
 

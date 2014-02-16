@@ -51,8 +51,10 @@
 	function shimlibSome(fn, arr, thisArg) {
 		if (!fn || !arr) { return; }
 		var thisObj = thisArg || arr;
+		var len = arr.length;
 
-		for (var i = 0; i < arr.length; i++) {
+		for (var i = 0; i < len; i++) {
+			if (!Object.prototype.hasOwnProperty.call(arr, i)) { continue; }
 			var currentResult = fn.call(thisObj, arr[i], i, arr);
 
 			if (!!currentResult === true) {
@@ -61,6 +63,23 @@
 		}
 
 		return false;
+	}
+
+	function shimlibEvery(fn, arr, thisArg) {
+		if (!fn || !arr) { return; }
+		var thisObj = thisArg || arr;
+		var len = arr.length;
+
+		for (var i = 0; i < len; i++) {
+			if (!Object.prototype.hasOwnProperty.call(arr, i)) { continue; }
+			var currentResult = fn.call(thisObj, arr[i], i, arr);
+
+			if (!!currentResult === false) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	function shimlibInvoke(arr, methodName, args) {
@@ -104,6 +123,7 @@
 	}
 
 	var shimlibArray = {
+		every: shimlibEvery,
 		filter: shimlibFilter,
 		forEach: shimlibForEach,
 		invoke: shimlibInvoke,

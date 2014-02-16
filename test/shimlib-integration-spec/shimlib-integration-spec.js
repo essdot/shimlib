@@ -59,8 +59,6 @@ describe('Array integration', function(){
 		expect(shimlibArray.map(func, arr2)).to.deep.equal(testArr);
 		expect(arr2.map(func)).to.deep.equal(shimlibArray.map(func, arr2));
 
-
-
 		expect([1, 2, 3]).to.have.ownProperty('0').and.ownProperty('1').and.ownProperty('2');
 	});
 
@@ -111,6 +109,32 @@ describe('Array integration', function(){
 		expect(arr.filter(evenFunc)).to.deep.equal(shimlibArray.filter(evenFunc, arr));
 		expect(arr.filter(evenFunc)).to.deep.equal(shimlibArray.filter(evenFunc, arr));
 		expect(shimlibArray.filter(evenFunc, arr)).to.deep.equal([2, 4, 6]);
+	});
+
+	it('shimlibSome matches Array.prototype.some', function() {
+		var arr = [ 1, 2, 3 ];
+		var arr2 = [ 1, 5, 3 ];
+
+		var isEven = function(n) { return n % 2 === 0; };
+
+		expect(arr.some(isEven)).to.equal(true);
+		expect(shimlibArray.some(isEven, arr)).to.equal(true);
+
+		expect(arr2.some(isEven)).to.equal(false);
+		expect(shimlibArray.some(isEven, arr2)).to.equal(false);
+	});
+
+	it('shimlibEvery matches Array.prototype.every', function() {
+		var arr = [ 1, 2, 3 ];
+		var arr2 = [ 60, 2, 8 ];
+
+		var isEven = function(n) { return n % 2 === 0; };
+
+		expect(arr.every(isEven)).to.equal(false);
+		expect(shimlibArray.every(isEven, arr)).to.equal(false);
+
+		expect(arr2.every(isEven)).to.equal(true);
+		expect(shimlibArray.every(isEven, arr2)).to.equal(true);
 	});
 
 });
@@ -193,6 +217,8 @@ describe('Number integration', function(){
 		both(0, 1);
 		both(0, 2);
 		both(-0, 2);
+		both(Infinity, 2);
+		both(NaN, 5);
 	});
 
 	xit('to fixed matches Number.prototype.toFixed, with proper rounding', function() {
