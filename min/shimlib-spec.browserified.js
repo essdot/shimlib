@@ -54,8 +54,6 @@
 		if (!fn || !arr) { return; }
 		var thisObj = thisArg || arr;
 
-		debugger;
-
 		for (var i = 0; i < arr.length; i++) {
 			if (arr[i] === _undefined) { continue; }
 
