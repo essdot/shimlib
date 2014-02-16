@@ -12,14 +12,21 @@ describe('Array integration', function(){
 	var shimlibArray = require('../../app/shimlib-array');
 	var shimlibIs = require('../../app/shimlib-is');
 
-	it('map', function(){
-		var arr = [2, 5, 9];
+	it('map functions have same behavior', function(){
+		var arr1 = [ 2, 5, 9 ];
+		var arr2 = [ 7, undefined, 9 ];
+
 		var func = function(n) {
 			return n * 3;
 		};
 
-		expect(arr.map(func)).to.deep.equal(shimlibArray.map(func, arr));
+		expect(arr1.map(func)).to.deep.equal([ 6, 15, 27 ]);
+		expect(shimlibArray.map(func, arr1)).to.deep.equal([ 6, 15, 27 ]);
+		expect(arr1.map(func)).to.deep.equal(shimlibArray.map(func, arr1));
 
+		expect(arr2.map(func)).to.deep.equal([ 21, NaN, 27 ]);
+		expect(shimlibArray.map(func, arr2)).to.deep.equal([ 21, NaN, 27 ]);
+		expect(arr2.map(func)).to.deep.equal(shimlibArray.map(func, arr2));
 	});
 
 	it('foreach', function() {

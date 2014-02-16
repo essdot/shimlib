@@ -12,7 +12,6 @@
 		var thisObj = thisArg || arr;
 
 		for (var i = 0; i < arr.length; i++) {
-			if (arr[i] === _undefined) { continue; }
 			if (fn.call(thisObj, arr[i], i, arr) === true) {
 				result.push(arr[i]);
 			}
@@ -26,7 +25,6 @@
 		var thisObj = thisArg || arr;
 
 		for (var i = 0; i < arr.length; i++) {
-			if (arr[i] === _undefined) { continue; }
 			var current = arr[i];
 
 			fn.call(thisObj, current, i, arr);
@@ -39,11 +37,8 @@
 		var thisObj = thisArg || arr;
 
 
-		for (var i = 0, j = 0; i < arr.length; i++) {
-			if (arr[i] === _undefined) { continue; }
-
-			result[j] = fn.call(thisObj, arr[i], i, arr);
-			j++;
+		for (var i = 0; i < arr.length; i++) {
+			result[i] = fn.call(thisObj, arr[i], i, arr);
 		}
 
 		return result;
@@ -54,8 +49,6 @@
 		var thisObj = thisArg || arr;
 
 		for (var i = 0; i < arr.length; i++) {
-			if (arr[i] === _undefined) { continue; }
-
 			var currentResult = fn.call(thisObj, arr[i], i, arr);
 
 			if (!!currentResult === true) {

@@ -14,6 +14,7 @@ describe('shimlib array', function() {
 
 			expect(shimlibArray.filter(evenFunc, [1, 2, 3, 4, 5, 6])).to.deep.equal([2, 4, 6]);
 			expect(shimlibArray.filter(falseFunc, [1, 2, 3, 4, 5, 6])).to.deep.equal([]);
+			expect(shimlibArray.filter(evenFunc, [undefined, 2, 4, 6, undefined])).to.deep.equal([ 2, 4, 6 ]);
 		});
 
 		it('passes arguments to callback', function() {
@@ -103,24 +104,12 @@ describe('shimlib array', function() {
 			expect(filterResult).to.deep.equal([ 'first value', 'third value' ]);
 			expect(s).to.equal('first value, second value, third value, ');
 		});
-
-		it('skips undefined elements', function () {
-			var arr1 = [ undefined, undefined, 7, 8, undefined];
-			var arr2 = [ 11, undefined, 12 ];
-			var arr3 = [ undefined, undefined ];
-
-			var func = function() { return true; };
-
-			expect(shimlibArray.filter(func, arr1)).to.deep.equal([ 7, 8 ]);
-			expect(shimlibArray.filter(func, arr2)).to.deep.equal([ 11, 12 ]);
-			expect(shimlibArray.filter(func, arr3)).to.deep.equal([ ]);
-		});
 	});
 	
 	describe('forEach', function(){
 
 		it('calls function for each element', function(){
-			var arr = [1, 2, 3, 4];
+			var arr = [ 1, 2, 3, 4, undefined ];
 
 			var s = "";
 			var func = function(val){
@@ -128,7 +117,7 @@ describe('shimlib array', function() {
 			};
 
 			shimlibArray.forEach(func, arr);
-			expect(s).to.equal("2468");
+			expect(s).to.equal("2468NaN");
 		});
 
 		it('passes arguments to callback', function(){
@@ -208,28 +197,6 @@ describe('shimlib array', function() {
 			expect(s).to.equal('first value, second value, third value, ');
 		});
 
-		it('skips undefined elements', function() {
-			var arr1 = [ undefined, 1, 2, undefined ];
-			var arr2 = [ 3, 4, undefined, 5 ];
-			var arr3 = [ undefined ];
-
-			var func = function(val) {
-				s = s + val.toString();
-			};
-
-			var s = '';
-
-			shimlibArray.forEach(func, arr1);
-			expect(s).to.equal('12');
-
-			s = '';
-			shimlibArray.forEach(func, arr2);
-			expect(s).to.equal('345');
-
-			s = '';
-			shimlibArray.forEach(func, arr3);
-			expect(s).to.equal('');
-		});
 	});
 
 	describe('some', function() {
@@ -243,18 +210,6 @@ describe('shimlib array', function() {
 
 			expect(shimlibArray.some(isEven, arr1)).to.equal(true);
 			expect(shimlibArray.some(isEven, arr2)).to.equal(false);
-		});
-
-		it('skips undefined elements', function() {
-			var arr1 = [ 1, undefined, 2 ];
-			var arr2 = [ undefined, undefined, undefined ];
-
-			var fn = function(n) {
-				return n === undefined;
-			};
-
-			expect(shimlibArray.some(fn, arr1)).to.equal(false);
-			expect(shimlibArray.some(fn, arr2)).to.equal(false);
 		});
 
 		it('iterates on non-array objects', function() {
@@ -440,18 +395,6 @@ describe('shimlib array', function() {
 			iterateObject.length = 3;
 			mapResult = shimlibArray.map(func, iterateObject);
 			expect(mapResult).to.deep.equal([ 'first value', 'second value', 'third value' ]);
-		});
-
-		it('skips undefined elements', function() {
-			var arr = [ 1, 2, undefined, 3, undefined, 5 ];
-			var arr2 = [ undefined, undefined, undefined ];
-			var arr3 = [ undefined, /re/, undefined ];
-
-			var fn = function(o) { return o.toString(); };
-
-			expect(shimlibArray.map(fn, arr)).to.deep.equal([ '1', '2', '3', '5' ]);
-			expect(shimlibArray.map(fn, arr2)).to.deep.equal([ ]);
-			expect(shimlibArray.map(fn, arr3)).to.deep.equal([ '/re/' ]);
 		});
 	});
 
