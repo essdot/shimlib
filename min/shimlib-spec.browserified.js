@@ -1408,7 +1408,7 @@ describe('shimlib klass', function() {
 		expect(bandSaw.count).to.equal(1);
 	});
 
-	it('extend', function(){
+	it('creates a new class by extending a class', function(){
 		Machine.static({ likesPower: true });
 
 		var NuclearMachine = Machine.extend({
@@ -1447,7 +1447,7 @@ describe('shimlib klass', function() {
 		expect(nukeMachine.powerOn()).to.equal('bwoop');
 	});
 
-	it('static', function() {
+	it('sets "static" properties on a class', function() {
 		var Fruit = shimlibKlass.klass({
 			hasCore: undefined,
 			isSweet: true,
