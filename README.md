@@ -64,7 +64,7 @@ Shimlib's query string functionality handles arrays and numbers. Empty query str
 var qs = 'section=45&id=abc&arr=1&arr=2&arr=3&empty';
 var qsObj = { section: 45, id: 'abc', arr: [1, 2, 3], empty: '' };
 
-shimlib.toQueryString(qsObj) === qs;
+shimlib.toQueryString(qsObj) === qs
 // returns an object with properties like qsObj
 shimlib.fromQueryString(qs);
 ```
@@ -109,8 +109,8 @@ var Auto = shimlib.klass({
 var car = Auto({ numberOfDoors: 4, weightInTons: 2 });
 var truck = Auto({ numberOfDoors: 2, weightInTons: 3 });
 
-car.description === "4 doors, 2 tons";
-truck.description === "2 doors, 3 tons";
+car.description === "4 doors, 2 tons"
+truck.description === "2 doors, 3 tons"
 
 car.honkHorn() === "beep beep!"
 truck.honkHorn() === "beep beep!"
