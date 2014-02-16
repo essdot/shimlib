@@ -1,43 +1,45 @@
 describe('shimlib object', function() {
 	var shimlibObject = require('../../app/shimlib-object');
 	
-	it('extend', function() {
-		var empty = {};
-		var objA = { name: 'Jeff', job: 'Clerk', age: 31 };
-		var objB = { age: 33, city: 'Boston' };
+	describe('extend', function() {
+		it("copies source object's properties into destination object", function() {
+			var empty = {};
+			var objA = { name: 'Jeff', job: 'Clerk', age: 31 };
+			var objB = { age: 33, city: 'Boston' };
 
-		shimlibObject.extend(objA, objB);
-		expect(objA.age).to.equal(33);
-		expect(objA.city).to.equal('Boston');
-		expect(objA.job).to.equal('Clerk');
+			shimlibObject.extend(objA, objB);
+			expect(objA.age).to.equal(33);
+			expect(objA.city).to.equal('Boston');
+			expect(objA.job).to.equal('Clerk');
 
-		shimlibObject.extend(empty, objB);
-		expect(empty.city).to.equal('Boston');
-		expect(empty.age).to.equal(33);
+			shimlibObject.extend(empty, objB);
+			expect(empty.city).to.equal('Boston');
+			expect(empty.age).to.equal(33);
+		});
+
+		it('extends from multiple sources', function() {
+			var coffee = {
+				espresso: 'espresso',
+				cappuccino: 'cappuccino',
+				caffeine: true
+			};
+
+			var juice = {
+				orange: 'orange',
+				grapefruit: 'grapefruit',
+				caffeine: false
+			};
+
+			var drinks = {};
+			shimlibObject.extend(drinks, coffee, juice);
+
+			expect(drinks.espresso).to.equal('espresso');
+			expect(drinks.orange).to.equal('orange');
+			expect(drinks.caffeine).to.equal(false);
+		});
 	});
 
-	it('extend multiple sources', function() {
-		var coffee = {
-			espresso: 'espresso',
-			cappuccino: 'cappuccino',
-			caffeine: true
-		};
-
-		var juice = {
-			orange: 'orange',
-			grapefruit: 'grapefruit',
-			caffeine: false
-		};
-
-		var drinks = {};
-		shimlibObject.extend(drinks, coffee, juice);
-
-		expect(drinks.espresso).to.equal('espresso');
-		expect(drinks.orange).to.equal('orange');
-		expect(drinks.caffeine).to.equal(false);
-	});
-
-	it('keys', function() {
+	it("lists object's own keys", function() {
 		var obj = {
 			derf: 7,
 			whin: 'abc',
@@ -59,7 +61,7 @@ describe('shimlib object', function() {
 	});
 
 
-	it('create', function(){
+	it('creates a new object inheriting from given object', function(){
 		var obj = {
 			bumbo: 7,
 			wulgus: 'abc',
@@ -97,7 +99,7 @@ describe('shimlib object', function() {
 		expect(Array.isArray(arrayObj)).to.equal(false);
 	});
 
-	it('copy property', function() {
+	it('copies property descriptors from source to destination', function() {
 		var obj = {
 			team: 'Supersonics'
 		};
@@ -126,10 +128,11 @@ describe('shimlib object', function() {
 		expect(obj2.myTeam).to.equal('Lakers');
 	});
 
-	it('without', function() {
+	it('creates objects based on given object but without given properties', function() {
 		var obj1 = { rain: true, snow: false, sleet: true };
 		var obj2 = { snow: false };
 
 		expect(shimlibObject.without(obj1, [ 'rain', 'sleet' ])).to.deep.equal(obj2);
+		expect(shimlibObject.without(obj2, [ 'nonesuch' ])).to.deep.equal(obj2);
 	});
 });

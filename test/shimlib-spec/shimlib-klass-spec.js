@@ -1,8 +1,12 @@
 describe('shimlib klass', function() {
 	shimlibKlass = require('../../app/shimlib-klass');
-	
-	it('klass', function(){
-		var Animal = shimlibKlass.klass({
+
+	var Animal;
+	var Auto;
+	var Machine;
+
+	beforeEach(function(){
+		Animal = shimlibKlass.klass({
 			animalKind: undefined,
 			callSound: undefined,
 
@@ -15,7 +19,7 @@ describe('shimlib klass', function() {
 			}
 		});
 
-		var Auto = shimlibKlass.klass({
+		Auto = shimlibKlass.klass({
 				autoKind: undefined,
 				hornSound: undefined,
 				tootHorn: function () {
@@ -27,6 +31,27 @@ describe('shimlib klass', function() {
 			}
 		);
 
+		var count = 0;
+		Machine = shimlibKlass.klass({
+			isMachine: true,
+			machineKind: undefined,
+			powerSource: undefined,
+
+			getSource: function() {
+				return powerSource;
+			},
+
+			initialize: function() {
+				this.count = count++;
+			},
+
+			ping: function() {
+				return 'ping!';
+			}
+		});
+	});
+
+	it('creates classes', function(){
 		var tiger = Animal({ animalKind: 'tiger', callSound: 'roar' });
 		var elephant = Animal({ animalKind: 'elephant', callSound: 'braaamp' });
 
@@ -46,27 +71,24 @@ describe('shimlib klass', function() {
 
 		expect(truck.tootHorn()).to.equal('braaamp!!!');
 		expect(truck.autoKind).to.equal('truck');
+	});
+
+	it('adds methods', function() {
+		var car = Auto({ autoKind: 'car', hornSound: 'honk' });
+		var truck = Auto({ autoKind: 'truck', hornSound: 'braaamp' });
 
 		expect(car.brake).to.equal(undefined);
+		expect(truck.brake).to.equal(undefined);
 
 		Auto.addMethod('brake', function brake(){ return 'stop!'; });
 
 		expect(car.brake).to.be.a('function');
 		expect(car.brake).to.equal(truck.brake);
 		expect(car.brake()).to.equal('stop!');
+		expect(car.brake).to.equal(truck.brake);
 	});
 
-	it('klass private members', function() {
-
-		var Auto = shimlibKlass.klass({
-				autoKind: undefined,
-				hornSound: undefined,
-				tootHorn: function () {
-					return this.hornSound + '!!!';
-				},
-			}
-		);
-
+	it('adds private members', function() {
 		Auto.private({ secret: 'shhh' });
 
 		var car = Auto({ autoKind: 'car', hornSound: 'honk' });
@@ -90,21 +112,6 @@ describe('shimlib klass', function() {
 	});
 
 	it('calls initialize', function() {
-		var count = 0;
-
-		var Machine = shimlibKlass.klass({
-			machineKind: undefined,
-			powerSource: undefined,
-
-			getSource: function() {
-				return powerSource;
-			},
-
-			initialize: function() {
-				this.count = count++;
-			}
-		});
-
 		var lathe = Machine({ machineKind: 'lathe' });
 		var bandSaw = Machine({ machineKind: 'band saw' });
 
@@ -113,14 +120,6 @@ describe('shimlib klass', function() {
 	});
 
 	it('extend', function(){
-		var Machine = shimlibKlass.klass({
-			machineKind: undefined,
-			isMachine: true,
-			ping: function() {
-				return 'ping!';
-			}
-		});
-
 		Machine.static({ likesPower: true });
 
 		var NuclearMachine = Machine.extend({

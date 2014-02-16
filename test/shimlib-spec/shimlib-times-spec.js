@@ -1,7 +1,7 @@
 describe('shimlib times', function() {
 	var shimlibTimes = require('../../app/shimlib-times');
 	
-	it('times function', function() {
+	it('repeats funtion invocation', function() {
 		var count = 0;
 		var func = function() {
 			count++;
@@ -11,11 +11,14 @@ describe('shimlib times', function() {
 		expect(count).to.equal(5);
 	});
 
-	it('times string', function() {
+	it('repeats a string', function() {
 		expect(shimlibTimes.times('a', 5)).to.deep.equal('aaaaa');
+		expect(shimlibTimes.times('abc', 3)).to.deep.equal('abcabcabc');
+		expect(shimlibTimes.times(' ', 5)).to.deep.equal('     ');
+		expect(shimlibTimes.times('', 5)).to.deep.equal('');
 	});
 
-	it('times value', function() {
+	it('repeats a value as an array', function() {
 		expect(shimlibTimes.times(undefined, 5)).to.deep.equal([ undefined, undefined, undefined, undefined, undefined ]);
 		expect(shimlibTimes.times(null, 4)).to.deep.equal([ null, null, null, null ]);
 		expect(shimlibTimes.times(3, 3)).to.deep.equal([3, 3, 3]);

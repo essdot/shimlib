@@ -1289,9 +1289,13 @@ describe('shimlib is', function() {
 });
 describe('shimlib klass', function() {
 	shimlibKlass = require('../../app/shimlib-klass');
-	
-	it('klass', function(){
-		var Animal = shimlibKlass.klass({
+
+	var Animal;
+	var Auto;
+	var Machine;
+
+	beforeEach(function(){
+		Animal = shimlibKlass.klass({
 			animalKind: undefined,
 			callSound: undefined,
 
@@ -1304,7 +1308,7 @@ describe('shimlib klass', function() {
 			}
 		});
 
-		var Auto = shimlibKlass.klass({
+		Auto = shimlibKlass.klass({
 				autoKind: undefined,
 				hornSound: undefined,
 				tootHorn: function () {
@@ -1316,6 +1320,27 @@ describe('shimlib klass', function() {
 			}
 		);
 
+		var count = 0;
+		Machine = shimlibKlass.klass({
+			isMachine: true,
+			machineKind: undefined,
+			powerSource: undefined,
+
+			getSource: function() {
+				return powerSource;
+			},
+
+			initialize: function() {
+				this.count = count++;
+			},
+
+			ping: function() {
+				return 'ping!';
+			}
+		});
+	});
+
+	it('creates classes', function(){
 		var tiger = Animal({ animalKind: 'tiger', callSound: 'roar' });
 		var elephant = Animal({ animalKind: 'elephant', callSound: 'braaamp' });
 
@@ -1335,27 +1360,24 @@ describe('shimlib klass', function() {
 
 		expect(truck.tootHorn()).to.equal('braaamp!!!');
 		expect(truck.autoKind).to.equal('truck');
+	});
+
+	it('adds methods', function() {
+		var car = Auto({ autoKind: 'car', hornSound: 'honk' });
+		var truck = Auto({ autoKind: 'truck', hornSound: 'braaamp' });
 
 		expect(car.brake).to.equal(undefined);
+		expect(truck.brake).to.equal(undefined);
 
 		Auto.addMethod('brake', function brake(){ return 'stop!'; });
 
 		expect(car.brake).to.be.a('function');
 		expect(car.brake).to.equal(truck.brake);
 		expect(car.brake()).to.equal('stop!');
+		expect(car.brake).to.equal(truck.brake);
 	});
 
-	it('klass private members', function() {
-
-		var Auto = shimlibKlass.klass({
-				autoKind: undefined,
-				hornSound: undefined,
-				tootHorn: function () {
-					return this.hornSound + '!!!';
-				},
-			}
-		);
-
+	it('adds private members', function() {
 		Auto.private({ secret: 'shhh' });
 
 		var car = Auto({ autoKind: 'car', hornSound: 'honk' });
@@ -1379,21 +1401,6 @@ describe('shimlib klass', function() {
 	});
 
 	it('calls initialize', function() {
-		var count = 0;
-
-		var Machine = shimlibKlass.klass({
-			machineKind: undefined,
-			powerSource: undefined,
-
-			getSource: function() {
-				return powerSource;
-			},
-
-			initialize: function() {
-				this.count = count++;
-			}
-		});
-
 		var lathe = Machine({ machineKind: 'lathe' });
 		var bandSaw = Machine({ machineKind: 'band saw' });
 
@@ -1402,14 +1409,6 @@ describe('shimlib klass', function() {
 	});
 
 	it('extend', function(){
-		var Machine = shimlibKlass.klass({
-			machineKind: undefined,
-			isMachine: true,
-			ping: function() {
-				return 'ping!';
-			}
-		});
-
 		Machine.static({ likesPower: true });
 
 		var NuclearMachine = Machine.extend({
@@ -1501,81 +1500,92 @@ describe('shimlib klass', function() {
 describe('shimlib number', function() {
 	shimlibNumber = require('../../app/shimlib-number');
 	
-	it('to fixed', function(){
-		expect(shimlibNumber.toFixed(NaN, 0)).to.equal('NaN');
-		expect(shimlibNumber.toFixed(NaN, 4)).to.equal('NaN');
+	describe('to fixed', function(){
+		it('handles NaN', function() {
+			expect(shimlibNumber.toFixed(NaN, 0)).to.equal('NaN');
+			expect(shimlibNumber.toFixed(NaN, 4)).to.equal('NaN');
+		});
 
-		expect(shimlibNumber.toFixed(75, 0)).to.equal('75');
-		expect(shimlibNumber.toFixed(75, 1)).to.equal('75.0');
-		expect(shimlibNumber.toFixed(75, 2)).to.equal('75.00');
-		expect(shimlibNumber.toFixed(-75, 2)).to.equal('-75.00');
-		expect(shimlibNumber.toFixed(75.105, 2)).to.equal('75.10');
-		expect(shimlibNumber.toFixed(-75.106, 2)).to.equal('-75.10');
-		expect(shimlibNumber.toFixed(2.00193, 3)).to.equal('2.001');
-		expect(shimlibNumber.toFixed(-1, 3)).to.equal('-1.000');
-		expect(shimlibNumber.toFixed(-1.6789, 3)).to.equal('-1.678');
-		expect(shimlibNumber.toFixed(1.111111111111111, 6)).to.equal('1.111111');
-		expect(shimlibNumber.toFixed(0, 0)).to.equal('0');
-		expect(shimlibNumber.toFixed(0, 1)).to.equal('0.0');
-		expect(shimlibNumber.toFixed(0, 2)).to.equal('0.00');
-		expect(shimlibNumber.toFixed(-0, 2)).to.equal('0.00');
-		expect(shimlibNumber.toFixed(0, 6)).to.equal('0.000000');
-		expect(shimlibNumber.toFixed(683039.112556, 4)).to.equal('683039.1125');
-		expect(shimlibNumber.toFixed(-683039.112556, 4)).to.equal('-683039.1125');
-		expect(shimlibNumber.toFixed(1234.1234, 4)).to.equal('1234.1234');
-		expect(shimlibNumber.toFixed(6789.67899, 4)).to.equal('6789.6789');
-		expect(shimlibNumber.toFixed(6789.90909090, 6)).to.equal('6789.909090');
-		expect(shimlibNumber.toFixed(-6789.90909090, 6)).to.equal('-6789.909090');
-		expect(shimlibNumber.toFixed(0.5, 1)).to.equal('0.5');
-		expect(shimlibNumber.toFixed(-0.5, 1)).to.equal('-0.5');
-		expect(shimlibNumber.toFixed(0.5, 6)).to.equal('0.500000');
-		expect(shimlibNumber.toFixed(-0.5, 6)).to.equal('-0.500000');
-		expect(shimlibNumber.toFixed((2/3), 6)).to.equal('0.666666');
-		expect(shimlibNumber.toFixed(-(2/3), 2)).to.equal('-0.66');
-		expect(shimlibNumber.toFixed((1/4), 6)).to.equal('0.250000');
-		expect(shimlibNumber.toFixed((1/8), 6)).to.equal('0.125000');
+		it('handles 0', function() {
+			expect(shimlibNumber.toFixed(0, 0)).to.equal('0');
+			expect(shimlibNumber.toFixed(0, 1)).to.equal('0.0');
+			expect(shimlibNumber.toFixed((0 * -1), 1)).to.equal('0.0');
+			expect(shimlibNumber.toFixed(0, 2)).to.equal('0.00');
+			expect(shimlibNumber.toFixed(-0, 2)).to.equal('0.00');
+			expect(shimlibNumber.toFixed(0, 6)).to.equal('0.000000');
+		});
+
+		it('represents numbers as strings with specified precision', function(){
+			expect(shimlibNumber.toFixed(75, 0)).to.equal('75');
+			expect(shimlibNumber.toFixed(75, 1)).to.equal('75.0');
+			expect(shimlibNumber.toFixed(75, 2)).to.equal('75.00');
+			expect(shimlibNumber.toFixed(-75, 2)).to.equal('-75.00');
+			expect(shimlibNumber.toFixed(75.105, 2)).to.equal('75.10');
+			expect(shimlibNumber.toFixed(-75.106, 2)).to.equal('-75.10');
+			expect(shimlibNumber.toFixed(2.00193, 3)).to.equal('2.001');
+			expect(shimlibNumber.toFixed(-1, 3)).to.equal('-1.000');
+			expect(shimlibNumber.toFixed(-1.6789, 3)).to.equal('-1.678');
+			expect(shimlibNumber.toFixed(1.111111111111111, 6)).to.equal('1.111111');
+			
+			expect(shimlibNumber.toFixed(683039.112556, 4)).to.equal('683039.1125');
+			expect(shimlibNumber.toFixed(-683039.112556, 4)).to.equal('-683039.1125');
+			expect(shimlibNumber.toFixed(1234.1234, 4)).to.equal('1234.1234');
+			expect(shimlibNumber.toFixed(6789.67899, 4)).to.equal('6789.6789');
+			expect(shimlibNumber.toFixed(6789.90909090, 6)).to.equal('6789.909090');
+			expect(shimlibNumber.toFixed(-6789.90909090, 6)).to.equal('-6789.909090');
+			expect(shimlibNumber.toFixed(0.5, 1)).to.equal('0.5');
+			expect(shimlibNumber.toFixed(-0.5, 1)).to.equal('-0.5');
+			expect(shimlibNumber.toFixed(0.5, 6)).to.equal('0.500000');
+			expect(shimlibNumber.toFixed(-0.5, 6)).to.equal('-0.500000');
+			expect(shimlibNumber.toFixed((2/3), 6)).to.equal('0.666666');
+			expect(shimlibNumber.toFixed(-(2/3), 2)).to.equal('-0.66');
+			expect(shimlibNumber.toFixed((1/4), 6)).to.equal('0.250000');
+			expect(shimlibNumber.toFixed((1/8), 6)).to.equal('0.125000');
+		});
 	});
 });
 describe('shimlib object', function() {
 	var shimlibObject = require('../../app/shimlib-object');
 	
-	it('extend', function() {
-		var empty = {};
-		var objA = { name: 'Jeff', job: 'Clerk', age: 31 };
-		var objB = { age: 33, city: 'Boston' };
+	describe('extend', function() {
+		it("copies source object's properties into destination object", function() {
+			var empty = {};
+			var objA = { name: 'Jeff', job: 'Clerk', age: 31 };
+			var objB = { age: 33, city: 'Boston' };
 
-		shimlibObject.extend(objA, objB);
-		expect(objA.age).to.equal(33);
-		expect(objA.city).to.equal('Boston');
-		expect(objA.job).to.equal('Clerk');
+			shimlibObject.extend(objA, objB);
+			expect(objA.age).to.equal(33);
+			expect(objA.city).to.equal('Boston');
+			expect(objA.job).to.equal('Clerk');
 
-		shimlibObject.extend(empty, objB);
-		expect(empty.city).to.equal('Boston');
-		expect(empty.age).to.equal(33);
+			shimlibObject.extend(empty, objB);
+			expect(empty.city).to.equal('Boston');
+			expect(empty.age).to.equal(33);
+		});
+
+		it('extends from multiple sources', function() {
+			var coffee = {
+				espresso: 'espresso',
+				cappuccino: 'cappuccino',
+				caffeine: true
+			};
+
+			var juice = {
+				orange: 'orange',
+				grapefruit: 'grapefruit',
+				caffeine: false
+			};
+
+			var drinks = {};
+			shimlibObject.extend(drinks, coffee, juice);
+
+			expect(drinks.espresso).to.equal('espresso');
+			expect(drinks.orange).to.equal('orange');
+			expect(drinks.caffeine).to.equal(false);
+		});
 	});
 
-	it('extend multiple sources', function() {
-		var coffee = {
-			espresso: 'espresso',
-			cappuccino: 'cappuccino',
-			caffeine: true
-		};
-
-		var juice = {
-			orange: 'orange',
-			grapefruit: 'grapefruit',
-			caffeine: false
-		};
-
-		var drinks = {};
-		shimlibObject.extend(drinks, coffee, juice);
-
-		expect(drinks.espresso).to.equal('espresso');
-		expect(drinks.orange).to.equal('orange');
-		expect(drinks.caffeine).to.equal(false);
-	});
-
-	it('keys', function() {
+	it("lists object's own keys", function() {
 		var obj = {
 			derf: 7,
 			whin: 'abc',
@@ -1597,7 +1607,7 @@ describe('shimlib object', function() {
 	});
 
 
-	it('create', function(){
+	it('creates a new object inheriting from given object', function(){
 		var obj = {
 			bumbo: 7,
 			wulgus: 'abc',
@@ -1635,7 +1645,7 @@ describe('shimlib object', function() {
 		expect(Array.isArray(arrayObj)).to.equal(false);
 	});
 
-	it('copy property', function() {
+	it('copies property descriptors from source to destination', function() {
 		var obj = {
 			team: 'Supersonics'
 		};
@@ -1664,17 +1674,18 @@ describe('shimlib object', function() {
 		expect(obj2.myTeam).to.equal('Lakers');
 	});
 
-	it('without', function() {
+	it('creates objects based on given object but without given properties', function() {
 		var obj1 = { rain: true, snow: false, sleet: true };
 		var obj2 = { snow: false };
 
 		expect(shimlibObject.without(obj1, [ 'rain', 'sleet' ])).to.deep.equal(obj2);
+		expect(shimlibObject.without(obj2, [ 'nonesuch' ])).to.deep.equal(obj2);
 	});
 });
 describe('shimlib query string', function(){
 	shimlibQs = require('../../app/shimlib-qs');
 
-	it('handle number values', function() {
+	it('handles number values correctly', function() {
 		var qs = 'decimal=1.7903&negativeDecimal=-0.235&zero=0&integer=12&negativeInteger=-28';
 
 		var obj = {
@@ -1689,7 +1700,7 @@ describe('shimlib query string', function(){
 		expect(shimlibQs.toQueryString(obj)).to.deep.equal(qs);
 	});
 
-	it('handle encoded strings', function() {
+	it('handles encoded strings correctly', function() {
 		var qs = 'crazy%3Aname=y&rappers=biggie%20%26%20pac&valWithEqSigns=a%3Db%3Dc&abc=abc';
 		var obj = {
 			'crazy:name': 'y',
@@ -1702,7 +1713,7 @@ describe('shimlib query string', function(){
 		expect(shimlibQs.toQueryString(obj)).to.deep.equal(qs);
 	});
 
-	it('handle array values', function() {
+	it('handles array values', function() {
 		var qs = 'strings=dd&strings=ff&strings=ty&numbers=1&numbers=2&numbers=3&numbers=4&empty&empty&mixed&mixed=1&mixed=hello';
 		var obj = {
 			strings: [ 'dd', 'ff', 'ty' ],
@@ -1715,7 +1726,20 @@ describe('shimlib query string', function(){
 		expect(shimlibQs.toQueryString(obj)).to.deep.equal(qs);
 	});
 
-	it('to query string', function() {
+	it('handles empty values correctly', function() {
+		var qs1 = 'empty1=&empty2';
+		var qs2 = 'empty1&empty2';
+		var obj = {
+			empty1: '',
+			empty2: ''
+		};
+
+		expect(shimlibQs.fromQueryString(qs1)).to.deep.equal(obj);
+		expect(shimlibQs.fromQueryString(qs2)).to.deep.equal(obj);
+		expect(shimlibQs.toQueryString(obj)).to.equal(qs2);
+	});
+
+	it('serializes objects to query strings', function() {
 		var qs = 'empty&empty2&negOne=-1&zero=0&hoobar=8&glenk=77&gary=abc&brelt=dd&brelt=ff&brelt=ty&laild=1&laild=2&laild=3&laild=4&rappers=biggie%20%26%20pac&valWithEqSigns=a%3Db%3Dc&crazy%3Aname=y';
 		var obj = {
 			empty: '',
@@ -1735,7 +1759,7 @@ describe('shimlib query string', function(){
 		expect(shimlibQs.toQueryString(obj)).to.equal(qs);
 	});
 
-	it('from query string', function() {
+	it('deserializes query string to object', function() {
 		var qs = 'empty&empty2=&negOne=-1&zero=0&hoobar=8&glenk=77&gary=abc&brelt=dd&brelt=ff&brelt=ty&laild=1&laild=2&laild=3&laild=4&rappers=biggie%20%26%20pac&valWithEqSigns=a%3Db%3Dc&crazy%3Aname=y';
 		var obj = {
 			empty: '',
@@ -1755,18 +1779,18 @@ describe('shimlib query string', function(){
 		expect(shimlibQs.fromQueryString(qs)).to.deep.equal(obj);
 	});
 
-	it('query string from url', function() {
-		var url = 'http://www.example.com?section=blog&id=45#comments';
-		var urlObj = { section: 'blog', id: 45 };
+	it('deserializes query string from URI', function() {
+		var uri = 'http://www.example.com?section=blog&id=45#comments';
+		var uriObj = { section: 'blog', id: 45 };
 
-		expect(shimlibQs.fromQueryString(url)).to.deep.equal(urlObj);
+		expect(shimlibQs.fromQueryString(uri)).to.deep.equal(uriObj);
 	});
 });
 
 describe('shimlib string', function() {
 	var shimlibString = require('../../app/shimlib-string');
 
-	it('strip', function(){
+	it('strips whitespace', function(){
 		var s = "  abc  ";
 		var tab = String.fromCharCode(9);
 
@@ -1781,7 +1805,7 @@ describe('shimlib string', function() {
 		expect(shimlibString.strip({})).to.equal(undefined);
 	});
 
-	it('insert', function() {
+	it('inserts strings into other strings', function() {
 		expect(shimlibString.insert('hello', 'x', 3)).to.equal('helxlo');
 		expect(shimlibString.insert('hello', 'x', 0)).to.equal('xhello');
 		expect(shimlibString.insert('hello', 'x', 5)).to.equal('hellox');
@@ -1801,7 +1825,7 @@ describe('shimlib string', function() {
 describe('shimlib times', function() {
 	var shimlibTimes = require('../../app/shimlib-times');
 	
-	it('times function', function() {
+	it('repeats funtion invocation', function() {
 		var count = 0;
 		var func = function() {
 			count++;
@@ -1811,11 +1835,14 @@ describe('shimlib times', function() {
 		expect(count).to.equal(5);
 	});
 
-	it('times string', function() {
+	it('repeats a string', function() {
 		expect(shimlibTimes.times('a', 5)).to.deep.equal('aaaaa');
+		expect(shimlibTimes.times('abc', 3)).to.deep.equal('abcabcabc');
+		expect(shimlibTimes.times(' ', 5)).to.deep.equal('     ');
+		expect(shimlibTimes.times('', 5)).to.deep.equal('');
 	});
 
-	it('times value', function() {
+	it('repeats a value as an array', function() {
 		expect(shimlibTimes.times(undefined, 5)).to.deep.equal([ undefined, undefined, undefined, undefined, undefined ]);
 		expect(shimlibTimes.times(null, 4)).to.deep.equal([ null, null, null, null ]);
 		expect(shimlibTimes.times(3, 3)).to.deep.equal([3, 3, 3]);

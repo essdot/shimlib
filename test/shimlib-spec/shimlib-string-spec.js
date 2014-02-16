@@ -1,7 +1,7 @@
 describe('shimlib string', function() {
 	var shimlibString = require('../../app/shimlib-string');
 
-	it('strip', function(){
+	it('strips whitespace', function(){
 		var s = "  abc  ";
 		var tab = String.fromCharCode(9);
 
@@ -16,7 +16,7 @@ describe('shimlib string', function() {
 		expect(shimlibString.strip({})).to.equal(undefined);
 	});
 
-	it('insert', function() {
+	it('inserts strings into other strings', function() {
 		expect(shimlibString.insert('hello', 'x', 3)).to.equal('helxlo');
 		expect(shimlibString.insert('hello', 'x', 0)).to.equal('xhello');
 		expect(shimlibString.insert('hello', 'x', 5)).to.equal('hellox');
