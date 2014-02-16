@@ -15,14 +15,19 @@
         return Object.prototype.toString.call(o) === "[object Array]";
     }
 
+    function shimlibIsNan(n) {
+		return n !== n;
+    }
+
     function shimlibIsNumber(o) {
-		if (isNaN(o)) { return false; }
+		if (shimlibIsNan(o)) { return false; }
 		return Object.prototype.toString.call(o) === "[object Number]";
     }
 
     var shimlibIs = {
 		isArray: shimlibIsArray,
 		isFunction: shimlibIsFunction,
+		isNan: shimlibIsNan,
 		isNumber: shimlibIsNumber,
 		isString: shimlibIsString
     };

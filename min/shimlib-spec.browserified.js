@@ -174,14 +174,19 @@
         return Object.prototype.toString.call(o) === "[object Array]";
     }
 
+    function shimlibIsNan(n) {
+		return n !== n;
+    }
+
     function shimlibIsNumber(o) {
-		if (isNaN(o)) { return false; }
+		if (shimlibIsNan(o)) { return false; }
 		return Object.prototype.toString.call(o) === "[object Number]";
     }
 
     var shimlibIs = {
 		isArray: shimlibIsArray,
 		isFunction: shimlibIsFunction,
+		isNan: shimlibIsNan,
 		isNumber: shimlibIsNumber,
 		isString: shimlibIsString
     };
@@ -296,7 +301,7 @@
 	var shimlibTimes = require('./shimlib-times');
 
 	function shimlibToFixed(n, precision) {
-		if (isNaN(n)) {
+		if (shimlibIs.isNan(n)) {
 			return "NaN";
 		}
 
@@ -1296,6 +1301,13 @@ describe('shimlib is', function() {
 		expect(isn(null)).to.equal(false);
 		expect(isn([])).to.equal(false);
 		expect(isn([ 1 ])).to.equal(false);
+	});
+
+	it('detects NaN', function() {
+		expect(shimlibIs.isNan(NaN)).to.equal(true);
+		expect(shimlibIs.isNan(undefined * 3)).to.equal(true);
+		expect(shimlibIs.isNan(Number.NaN)).to.equal(true);
+		expect(shimlibIs.isNan(1 / 0)).to.equal(false);
 	});
 });
 describe('shimlib klass', function() {

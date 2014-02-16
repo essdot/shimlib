@@ -31,9 +31,10 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 #### Is
 
 * **shimlib.isArray(o)**: Returns `true` if o is an array, `false` otherwise. Can be used as a shim for Array.isArray.
-* **shimlib.isString**: Returns `true` if o is a string, `false` otherwise.
-* **shimlib.isFunction**: Returns `true` if o is an array, `false` otherwise.
-* **shimlib.isNumber**: Returns `true` if o is an array, `false` otherwise.
+* **shimlib.isString(s)**: Returns `true` if *s* is a string, `false` otherwise.
+* **shimlib.isFunction(f)**: Returns `true` if *f* is a function, `false` otherwise.
+* **shimlib.isNan(n)**: Returns `true` if *n* is NaN. More accurate implementation than native `isNaN`, which has misleading behavior.
+* **shimlib.isNumber(n)**: Returns `true` if *n* is a number, `false` otherwise.
 
 #### Number
 

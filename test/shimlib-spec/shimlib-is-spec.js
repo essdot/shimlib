@@ -61,4 +61,11 @@ describe('shimlib is', function() {
 		expect(isn([])).to.equal(false);
 		expect(isn([ 1 ])).to.equal(false);
 	});
+
+	it('detects NaN', function() {
+		expect(shimlibIs.isNan(NaN)).to.equal(true);
+		expect(shimlibIs.isNan(undefined * 3)).to.equal(true);
+		expect(shimlibIs.isNan(Number.NaN)).to.equal(true);
+		expect(shimlibIs.isNan(1 / 0)).to.equal(false);
+	});
 });
