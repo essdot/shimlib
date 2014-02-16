@@ -20,7 +20,7 @@ Some of its functions are similar to what you'll find in  [underscore.js](http:/
 
 * **shimlib.every(fn, arr, [thisArg])**: Standard some function. Returns `true` if, after calling *fn* for every element of *arr*, no falsy values were found. *thisArg* is an optional parameter that will be bound to `this` when *fn* is called. Otherwise, `this` will be bound to *arr*. Can be used as a shim for [Array.prototype.every](http://www.ecma-international.org/ecma-262/5.1/#sec-15.4.4.16).
 
-* **shimlib.invoke(arr, methodName)**: Invoke *methodName* as a method of each element of *arr* and return an array of the results of each invocation. *methodName* should be a string. Any extra arguments will be passed on to the method.
+* **shimlib.invoke(arr, methodName [, extraArg1...])**: Invoke *methodName* as a method of each element of *arr* and return an array of the results of each invocation. *methodName* should be a string. Any extra arguments will be passed on to the method.
 
 * **shimlib.pickRandom(arr)**: Returns a randomly-selected element of *arr*.
 
