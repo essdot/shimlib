@@ -305,6 +305,10 @@
 			return "NaN";
 		}
 
+		if (n === Infinity) {
+			return "Infinity";
+		}
+
 		if (!shimlibIs.isNumber(n)) {
 			throw new TypeError('n must be a number or NaN');
 		}
@@ -1527,6 +1531,17 @@ describe('shimlib number', function() {
 		it('handles NaN', function() {
 			expect(shimlibNumber.toFixed(NaN, 0)).to.equal('NaN');
 			expect(shimlibNumber.toFixed(NaN, 4)).to.equal('NaN');
+
+			var shouldThrow = function() {
+				shimlibNumber.toFixed([1, 2, 3], 4);
+			};
+
+			expect(shouldThrow).to.throw(TypeError);
+		});
+
+		it('handles Infinity', function() {
+			expect(shimlibNumber.toFixed(1/ 0, 2)).to.equal('Infinity');
+			expect(shimlibNumber.toFixed(Infinity, 0)).to.equal('Infinity');
 		});
 
 		it('handles 0', function() {

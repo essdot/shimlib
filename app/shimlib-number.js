@@ -9,6 +9,10 @@
 			return "NaN";
 		}
 
+		if (n === Infinity) {
+			return "Infinity";
+		}
+
 		if (!shimlibIs.isNumber(n)) {
 			throw new TypeError('n must be a number or NaN');
 		}
