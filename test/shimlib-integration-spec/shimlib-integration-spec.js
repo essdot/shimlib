@@ -35,27 +35,33 @@ describe('Array integration', function(){
 		expect(Object.keys(arr2.map(func))).to.deep.equal(testArrKeys);
 		expect(Object.keys(shimlibArray.map(func, arr2))).to.deep.equal(testArrKeys);
 
-		expect(arr2.map(func)).to.have.property('0');
-		expect(arr2.map(func)).to.have.property('1');
-		expect(arr2.map(func)).to.have.property('7');
-		expect(shimlibArray.map(func, arr2)).to.have.property('0');
-		expect(shimlibArray.map(func, arr2)).to.have.property('1');
-		expect(shimlibArray.map(func, arr2)).to.have.property('7');
+		expect(arr2.map(func)).to.have.ownProperty('0')
+									.and.ownProperty('1')
+									.and.ownProperty('7');
 
-		expect(arr2.map(func)).not.to.have.property('2');
-		expect(arr2.map(func)).not.to.have.property('3');
-		expect(arr2.map(func)).not.to.have.property('4');
-		expect(arr2.map(func)).not.to.have.property('5');
-		expect(arr2.map(func)).not.to.have.property('6');
-		expect(shimlibArray.map(func, arr2)).not.to.have.property('2');
-		expect(shimlibArray.map(func, arr2)).not.to.have.property('3');
-		expect(shimlibArray.map(func, arr2)).not.to.have.property('4');
-		expect(shimlibArray.map(func, arr2)).not.to.have.property('5');
-		expect(shimlibArray.map(func, arr2)).not.to.have.property('6');
+		expect(shimlibArray.map(func, arr2)).to.have.ownProperty('0')
+												.and.ownProperty('1')
+												.and.ownProperty('7');
+
+		expect(arr2.map(func)).not.to.have.ownProperty('2')
+									.and.ownProperty('3')
+									.and.ownProperty('4')
+									.and.ownProperty('5')
+									.and.ownProperty('6');
+									
+		expect(shimlibArray.map(func, arr2)).not.to.have.ownProperty('2')
+												.and.ownProperty('3')
+												.and.ownProperty('4')
+												.and.ownProperty('5')
+												.and.ownProperty('6');
 
 		expect(arr2.map(func)).to.deep.equal(testArr);
 		expect(shimlibArray.map(func, arr2)).to.deep.equal(testArr);
 		expect(arr2.map(func)).to.deep.equal(shimlibArray.map(func, arr2));
+
+
+
+		expect([1, 2, 3]).to.have.ownProperty('0').and.ownProperty('1').and.ownProperty('2');
 	});
 
 	it('shimlibForeach matches Array.prototype.forEach', function() {
