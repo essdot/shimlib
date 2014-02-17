@@ -7,7 +7,8 @@
 	var shimlibObject = require('./shimlib-object');
 
 	function objectIsGlobal(o) {
-		return (function() { return this; })();
+		var g = (function() { return this; })();
+		return g === o;
 	}
 
 	// Returns a *factory function* (klass) that makes an object. Not a constructor!!!
@@ -23,10 +24,12 @@
 		// This is what gets returned to shimlibKlass callers
 		function klass(o){
 			var newObj;
+			/*jshint validthis:true */
+			var thisVal = this;
 
 			// Try to determine if we have been called as a constructor
-			if (this !== _undefined && !objectIsGlobal(this)) {
-				newObj = this;
+			if (thisVal !== _undefined && !objectIsGlobal(thisVal)) {
+				newObj = thisVal;
 			} else {
 				newObj = new Klass();
 			}
