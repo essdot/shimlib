@@ -59,7 +59,7 @@
 			if (!Object.prototype.hasOwnProperty.call(arr, i)) { continue; }
 			var currentResult = fn.call(thisObj, arr[i], i, arr);
 
-			if (!!currentResult === true) {
+			if (Boolean(currentResult)) {
 				return true;
 			}
 		}
@@ -76,7 +76,7 @@
 			if (!Object.prototype.hasOwnProperty.call(arr, i)) { continue; }
 			var currentResult = fn.call(thisObj, arr[i], i, arr);
 
-			if (!!currentResult === false) {
+			if (Boolean(currentResult) === false) {
 				return false;
 			}
 		}
