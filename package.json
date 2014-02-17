@@ -1,9 +1,8 @@
 {
   "name": "shimlib",
   "author": "Justin Sippel <justin@sippel.com>",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A useful Javascript library",
-  "main": "index.js",
   "scripts": {
     "test": "bin/test",
     "start": "bin/serve"
