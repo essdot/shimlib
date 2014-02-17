@@ -5,12 +5,9 @@
 	var _undefined = void 0;
 
 	var shimlibObject = require('./shimlib-object');
-	var shimlibArray = require('./shimlib-array');
 
 	function objectIsGlobal(o) {
-		function getGlobal() { return this; }
-
-		return o === getGlobal();
+		return (function() { return this; })();
 	}
 
 	// Returns a *factory function* (klass) that makes an object. Not a constructor!!!

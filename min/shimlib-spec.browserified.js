@@ -222,12 +222,9 @@
 	var _undefined = void 0;
 
 	var shimlibObject = require('./shimlib-object');
-	var shimlibArray = require('./shimlib-array');
 
 	function objectIsGlobal(o) {
-		function getGlobal() { return this; }
-
-		return o === getGlobal();
+		return (function() { return this; })();
 	}
 
 	// Returns a *factory function* (klass) that makes an object. Not a constructor!!!
@@ -314,7 +311,7 @@
 		klass: shimlibKlass
 	};
 })();
-},{"./shimlib-array":1,"./shimlib-object":6}],5:[function(require,module,exports){
+},{"./shimlib-object":6}],5:[function(require,module,exports){
 (function shimlibNumberModule() {
 	"use strict";
 
@@ -668,12 +665,11 @@
 		return arr;
 	}
 
-	var shimlibTimes = {
+	module.exports = {
 		times: shimlibTimes,
 		timesString: shimlibTimesString,
 		timesValue: shimlibTimesValue
 	};
-	module.exports = shimlibTimes;
 })();
 },{"./shimlib-is":3}],10:[function(require,module,exports){
 describe('shimlib array', function() {

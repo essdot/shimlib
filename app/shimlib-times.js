@@ -41,10 +41,9 @@
 		return arr;
 	}
 
-	var shimlibTimes = {
+	module.exports = {
 		times: shimlibTimes,
 		timesString: shimlibTimesString,
 		timesValue: shimlibTimesValue
 	};
-	module.exports = shimlibTimes;
 })();
