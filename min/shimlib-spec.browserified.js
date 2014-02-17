@@ -15,7 +15,8 @@
 
 		for (var i = 0; i < len; i++) {
 			if (!Object.prototype.hasOwnProperty.call(arr, i)) { continue; }
-			if (fn.call(thisObj, arr[i], i, arr) === true) {
+			var currentResult = fn.call(thisObj, arr[i], i, arr);
+			if (!!currentResult) {
 				result.push(arr[i]);
 			}
 		}
@@ -801,6 +802,20 @@ describe('shimlib array', function() {
 
 			expect(shimlibArray.filter(arr, func)).to.deep.equal([ 1, 2, 3, 4, 5 ]);
 			expect(indices).to.deep.equal([ 0, 1, 2, 3, 10 ]);
+		});
+
+		it('handles non-boolean callback returns', function() {
+			var arr = [ 1, 2, 3, 4 ];
+
+			var isEven = function(n) {
+				if (n % 2 === 0) {
+					return {};
+				}
+
+				return 0;
+			};
+
+			expect(shimlibArray.filter(arr, isEven)).to.deep.equal([ 2, 4 ]);
 		});
 	});
 	

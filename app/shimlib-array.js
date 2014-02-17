@@ -14,7 +14,8 @@
 
 		for (var i = 0; i < len; i++) {
 			if (!Object.prototype.hasOwnProperty.call(arr, i)) { continue; }
-			if (fn.call(thisObj, arr[i], i, arr) === true) {
+			var currentResult = fn.call(thisObj, arr[i], i, arr);
+			if (!!currentResult) {
 				result.push(arr[i]);
 			}
 		}
