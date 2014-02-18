@@ -124,7 +124,7 @@ truck.honkHorn() === "beep beep!"
 **IMPORTANT: DON'T CALL YOUR *klass* WITH `new`:**
 
 `//Don't do this!`  
-~~`var car2 = new Auto();`~~
+~~`var car2 = new Auto();`~~  
 
 (It should still work even if you accidentally use `new`. But don't do it.)
 
@@ -165,6 +165,12 @@ Auto.static({ allUseGasoline: false });
 
 Auto.allUseGasoline === false;
 ```
+
+___
+
+## Using in browser
+
+[min/shimlib.min.js](min/shimlib.min.js) is the standalone build that can be used in web pages. It will set the global variable 'shimlib'.
 
 ## Tests & Tools
 
