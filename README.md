@@ -179,10 +179,7 @@ Shimlib's unit tests use [mocha](http://visionmedia.github.io/mocha/) and [chai]
 Gulp tasks are provided for preparing scripts. Browserify is used to resolve the node modules into a single script for running the tests in the browser and to generate the shimlib standalone build, which can be used in browser or node.
 
 ## Installing
-
-    sh ./install.sh
-
-(Installs browserify, and mocha for the test runner)
+Run `sh ./install.sh` to install Browserify, and mocha for the test runner.
 
 ## Running tests
 
