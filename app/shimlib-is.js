@@ -21,7 +21,7 @@
 
     function shimlibIsNumber(o) {
 		if (shimlibIsNan(o)) { return false; }
-		return Object.prototype.toString.call(o) === "[object Number]";
+    return o === (o - 0);
     }
 
     var shimlibIs = {
