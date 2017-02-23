@@ -174,7 +174,7 @@ ___
 
 ## Tests & Tools
 
-Shimlib's unit tests use [mocha](http://visionmedia.github.io/mocha/) and [chai](http://chaijs.com/). There are also integration tests for ensuring that it has the same behavior as native functions. Shimlib aims to work if Javascript builtins have been altered, and provides tests for that too. Shimlib's functionality is split into node-style modules.
+Shimlib's unit tests use [mocha](http://mochajs.org/) and [chai](http://chaijs.com/). There are also integration tests for ensuring that it has the same behavior as native functions. Shimlib aims to work if Javascript builtins have been altered, and provides tests for that too. Shimlib's functionality is split into node-style modules.
 
 Gulp tasks are provided for preparing scripts. Browserify is used to resolve the node modules into a single script for running the tests in the browser and to generate the shimlib standalone build, which can be used in browser or node.
 
